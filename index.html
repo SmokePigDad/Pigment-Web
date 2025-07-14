@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pigment with Pollinations.AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- The CSS file is at the same level -->
+<link rel="stylesheet" href="pigment.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Pigment <span class="subtitle-brand">with pollinations.ai</span></h1>
+    </div>
+    <p class="subtitle">
+        Create stunning AI images: choose from a variety of models and styles.
+    </p>
+</header>
+<div class="generator-container">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-sliders-h"></i> Generation Settings</h2>
+    <div class="form-group" id="prompt-group">
+        <label for="prompt"><i class="fas fa-comment-dots"></i> Image Prompt</label>
+        <div class="prompt-container">
+            <button id="inspire-btn" class="btn btn-inspire"
+                aria-label="Inspire Me, random prompt suggestion"
+                title="Suggest a random creative prompt" tabindex="0" type="button">
+                <i class="fas fa-dice"></i>
+            </button>
+            <textarea
+                id="prompt"
+                class="input-control"
+                placeholder="Describe the image you want to generate..."
+                aria-label="Image prompt, description of what you want to generate"
+            >A majestic lion in the savannah at sunset</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="model"><i class="fas fa-cogs"></i> AI Model</label>
+        <div class="select-wrapper">
+            <select id="model" class="input-control select-control">
+                <option value="loading" disabled>Loading models...</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+        <div id="model-info" class="model-info">
+            <p>Select a model to see its description</p>
+        </div>
+        <div id="model-seed-warning" class="model-seed-warning" style="display: none;"></div>
+    </div>
+    
+    <div class="form-group form-toggle-row" id="batch-toggle-row">
+        <div>
+            <label for="batch-toggle" class="batch-toggle-label">Batch Mode: All Art Styles</label>
+            <p id="batch-mode-desc">Overrides 'Number of Images' and 'Art Style' to generate one image for every style.</p>
+        </div>
+        <button id="batch-toggle" role="switch" aria-checked="false" aria-labelledby="batch-toggle-label">
+            <span class="toggle-icon"></span>
+        </button>
+    </div>
+
+    <div class="form-group">
+        <label for="count"><i class="fas fa-hashtag"></i> Number of Images</label>
+        <div class="select-wrapper">
+            <select id="count" class="input-control select-control">
+                <option value="2">2 images</option>
+                <option value="4" selected>4 images</option>
+                <option value="10">10 images</option>
+                <option value="25">25 images</option>
+                <option value="50">50 images</option>
+                <option value="100">100 images</option>
+                <option value="200">200 images</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="style"><i class="fas fa-brush"></i> Art Style</label>
+        <div class="select-wrapper">
+            <select id="style" class="input-control select-control">
+                <option value="">None (Default)</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="size"><i class="fas fa-expand-arrows-alt"></i> Image Size</label>
+        <div class="select-wrapper">
+            <select id="size" class="input-control select-control">
+                <option value="512,512">512×512 (Square)</option>
+                <option value="1024,1024" selected>1024×1024 (Square)</option>
+                <option value="640,960">640×960 (2:3 Portrait)</option>
+                <option value="960,640">960×640 (3:2 Landscape)</option>
+                <option value="1296,972">1296×972 (4:3 Standard)</option>
+                <option value="1728,972">1728×972 (16:9 HD)</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group" id="advanced-options">
+        <div class="flex-gap-15-wrap-mt10">
+            <label class="flex-center-gap8-pointer" for="nologo">
+                <input type="checkbox" id="nologo" checked>
+                Remove<br>Watermark
+            </label>
+            <label class="flex-center-gap8-pointer" for="private">
+                <input type="checkbox" id="private" checked>
+                Private<br>Generation
+            </label>
+            <label class="flex-center-gap8-pointer" for="enhance">
+                <input type="checkbox" id="enhance">
+                Enhance<br>prompt
+            </label>
+            <label id="transparent-label" class="flex-center-gap8-pointer" for="transparent" style="display: none;">
+                <input type="checkbox" id="transparent">
+                Transparent<br>background
+            </label>
+        </div>
+    </div>
+    <button id="generate-btn" class="btn btn-generate" aria-label="Generate Images">
+        <i class="fas fa-magic"></i> Generate Images
+    </button>
+    <div class="progress-container" role="status" aria-live="polite">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="progress-text" id="progress-text">Ready to generate</div>
+    <div class="status-message minh-2_4em" id="status-message" aria-live="assertive"></div>
+</div>
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title" id="gallery-title"><i class="fas fa-images"></i> Generated Images</h2>
+        <div class="gallery-controls" role="group" aria-label="Gallery actions">
+            <button id="download-all-btn" class="btn" aria-label="Download all images as ZIP" type="button" tabindex="0">
+                <i class="fas fa-download"></i>
+            </button>
+            <button id="download-favorites-btn" class="btn btn-download-fav" aria-label="Download favorites as ZIP" type="button" tabindex="0">
+                <i class="fas fa-heart"></i>
+            </button>
+            <button id="clear-btn" class="btn btn-clear" aria-label="Clear all generated images" type="button" tabindex="0">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>
+    <div class="gallery-grid" id="gallery" role="region" aria-label="Generated Images Gallery" aria-labelledby="gallery-title" aria-live="polite" tabindex="0"></div>
+</div>
+</div>
+<footer>
+    <p>Created with Pollinations.AI | Rate Limit: 1 image per 3 seconds</p>
+    <div class="footer-links">
+        <a href="https://pollinations.ai" class="footer-link" target="_blank">Pollinations Website</a>
+        <a href="https://docs.pollinations.ai" class="footer-link" target="_blank">API Documentation</a>
+        <a href="https://github.com/pollinations" class="footer-link" target="_blank">GitHub</a>
+    </div>
+</footer>
+</div>
+<!-- The JS file is also at the same level -->
+<script src="pigment.js"></script>
+</body>
+</html>

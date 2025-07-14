@@ -1,0 +1,40 @@
+// api/inspire.js
+
+export default async function handler(request, response) {
+  // Read the secret API key from Vercel's environment variables
+  const apiKey = process.env.POLLINATIONS_API_KEY;
+
+  if (!apiKey) {
+    return response.status(500).json({ error: "API key is not configured on the server." });
+  }
+
+  const instruction = "Generate a highly artistic and imaginative image prompt. Ensure the description is vivid, creative, and detailed enough to inspire unique artwork. Provide only the image prompt without any introductory or concluding comments.";
+  const encodedInstruction = encodeURIComponent(instruction);
+  
+  // Use the high-quality model for the request
+  const url = `https://text.pollinations.ai/${encodedInstruction}?model=openai-large&temperature=0.9`;
+
+  try {
+    const poll_res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    });
+
+    if (!poll_res.ok) {
+      const errorText = await poll_res.text();
+      return response.status(poll_res.status).json({ error: `Pollinations API error: ${errorText}` });
+    }
+
+    const promptText = await poll_res.text();
+    
+    // Set CORS headers to allow requests from your deployed domain
+    response.setHeader('Access-Control-Allow-Origin', '*'); 
+    response.setHeader('Access-Control-Allow-Methods', 'GET');
+    
+    return response.status(200).json({ prompt: promptText.trim() });
+
+  } catch (error) {
+    return response.status(500).json({ error: "Failed to fetch from Pollinations API." });
+  }
+}
