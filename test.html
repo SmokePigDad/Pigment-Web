@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #121019;
+            color: #e2e2e2;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .pass {
+            background: #4caf50;
+            color: white;
+        }
+        .fail {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pigment Modular Architecture Test</h1>
+    <div id="test-results"></div>
+
+    <script type="module">
+        const results = document.getElementById('test-results');
+        
+        function addResult(test, passed, message = '') {
+            const div = document.createElement('div');
+            div.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            div.textContent = `${test}: ${passed ? 'PASS' : 'FAIL'} ${message}`;
+            results.appendChild(div);
+        }
+
+        // Test module imports
+        try {
+            const { INSPIRE_PROMPTS, DEFAULT_MODELS } = await import('./src/config/constants.js');
+            addResult('Constants import', true, `- ${INSPIRE_PROMPTS.length} prompts, ${DEFAULT_MODELS.length} models`);
+        } catch (error) {
+            addResult('Constants import', false, error.message);
+        }
+
+        try {
+            const { artStyles } = await import('./src/config/artStyles.js');
+            const styleCount = Object.keys(artStyles).length;
+            addResult('Art styles import', true, `- ${styleCount} styles loaded`);
+        } catch (error) {
+            addResult('Art styles import', false, error.message);
+        }
+
+        try {
+            const { buildPrompt, getArtStyleNames } = await import('./src/utils/promptBuilder.js');
+            const testPrompt = buildPrompt('test prompt', 'Watercolor');
+            const hasStyle = testPrompt.includes('watercolor');
+            addResult('Prompt builder', hasStyle, hasStyle ? '- Style applied correctly' : '- Style not applied');
+        } catch (error) {
+            addResult('Prompt builder', false, error.message);
+        }
+
+        try {
+            const { sleep, generateUniqueId } = await import('./src/utils/helpers.js');
+            const id1 = generateUniqueId();
+            const id2 = generateUniqueId();
+            const unique = id1 !== id2;
+            addResult('Helper functions', unique, unique ? '- Unique IDs generated' : '- IDs not unique');
+        } catch (error) {
+            addResult('Helper functions', false, error.message);
+        }
+
+        try {
+            const { AppState, setGenerationState } = await import('./src/utils/stateManager.js');
+            const initialState = AppState.isGenerating;
+            setGenerationState(true);
+            const newState = AppState.isGenerating;
+            addResult('State management', !initialState && newState, '- State changes correctly');
+        } catch (error) {
+            addResult('State management', false, error.message);
+        }
+
+        try {
+            const { buildImageUrl, generateRandomSeed } = await import('./src/services/pollinationsService.js');
+            const seed = generateRandomSeed();
+            const url = buildImageUrl({
+                prompt: 'test',
+                width: 512,
+                height: 512,
+                seed: seed,
+                model: 'flux',
+                nologo: true,
+                private: false,
+                enhance: false,
+                transparent: false
+            });
+            const validUrl = url.includes('pollinations.ai');
+            addResult('Pollinations service', validUrl, validUrl ? '- URL generated correctly' : '- Invalid URL');
+        } catch (error) {
+            addResult('Pollinations service', false, error.message);
+        }
+
+        try {
+            const { getInspirationPrompt } = await import('./src/services/inspireService.js');
+            addResult('Inspire service', true, '- Service loaded successfully');
+        } catch (error) {
+            addResult('Inspire service', false, error.message);
+        }
+
+        // Test component loading
+        const components = [
+            'modelSelector',
+            'artStyleSelector', 
+            'batchToggle',
+            'inspireButton',
+            'gallery',
+            'imageGenerator'
+        ];
+
+        for (const component of components) {
+            try {
+                await import(`./src/components/${component}.js`);
+                addResult(`Component: ${component}`, true, '- Loaded successfully');
+            } catch (error) {
+                addResult(`Component: ${component}`, false, error.message);
+            }
+        }
+
+        // Test main app
+        try {
+            const { initializeApp } = await import('./src/main.js');
+            addResult('Main app', typeof initializeApp === 'function', '- Main function available');
+        } catch (error) {
+            addResult('Main app', false, error.message);
+        }
+
+        addResult('Test Complete', true, '- All module tests finished');
+    </script>
+</body>
+</html>

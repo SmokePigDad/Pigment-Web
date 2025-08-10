@@ -1,0 +1,189 @@
+/* Main stylesheet - imports all modular CSS files */
+
+/* Import order is important for CSS cascade */
+@import './variables.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+@import './gallery.css';
+
+/* Additional component-specific styles */
+
+/* Prompt container */
+.prompt-container {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.prompt-container textarea {
+    flex: 1;
+}
+
+/* Batch toggle */
+.form-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.batch-toggle-label {
+    font-weight: 600;
+    color: var(--light);
+    margin-bottom: 4px;
+}
+
+#batch-mode-desc {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Toggle switch */
+#batch-toggle {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+#batch-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#batch-toggle[aria-checked="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.toggle-icon {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--light);
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+#batch-toggle[aria-checked="true"] .toggle-icon {
+    transform: translateX(26px);
+}
+
+/* Advanced options */
+#advanced-options {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.flex-gap-15-wrap-mt10 {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.flex-center-gap8-pointer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--light);
+    transition: var(--transition);
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    min-width: 80px;
+}
+
+.flex-center-gap8-pointer:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Utility classes */
+.minh-2_4em {
+    min-height: 2.4em;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fa-spin {
+    animation: fa-spin 1s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error states */
+.error {
+    color: var(--error);
+    border-color: var(--error);
+}
+
+.success {
+    color: var(--success);
+    border-color: var(--success);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary: #9c4dff;
+        --secondary: #ffb347;
+        --light: #ffffff;
+        --dark: #000000;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+    
+    .input-control {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+    
+    .image-card:hover {
+        transform: none;
+    }
+    
+    .image-card:hover .generated-image {
+        transform: none;
+    }
+}

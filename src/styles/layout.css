@@ -1,0 +1,118 @@
+/* Layout styles */
+
+/* Header */
+header {
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-lg);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: var(--primary);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+    color: var(--gray);
+    font-size: var(--font-size-small);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: var(--spacing-sm);
+}
+
+.footer-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-link:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+/* Main generator layout */
+.generator-container {
+    display: grid;
+    grid-template-columns: minmax(var(--control-panel-min-width), var(--control-panel-width)) 1fr;
+    gap: var(--grid-gap);
+    margin-bottom: var(--grid-gap);
+    width: 100%;
+    align-items: flex-start;
+}
+
+/* Panel base styles */
+.gallery-section,
+.control-panel {
+    background: rgba(26, 22, 38, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: var(--spacing-xl);
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-xl);
+    color: var(--light);
+    font-weight: 600;
+}
+
+.panel-title i {
+    font-size: var(--font-size-xl);
+    color: var(--primary);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .generator-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    body {
+        padding: var(--spacing-sm);
+    }
+    
+    .gallery-section,
+    .control-panel {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .logo {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

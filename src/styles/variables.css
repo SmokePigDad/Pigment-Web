@@ -1,0 +1,47 @@
+/* CSS Custom Properties (Variables) */
+
+:root {
+    /* Color Palette */
+    --primary: #8a2be2;
+    --primary-dark: #7b24cb;
+    --secondary: #ffaf40;
+    --dark: #121019;
+    --darker: #0d0b12;
+    --light: #e2e2e2;
+    --gray: #4a4a68;
+    --success: #4caf50;
+    --warning: #ff9800;
+    --error: #f44336;
+    --focus-ring: #ffc973;
+    --high-contrast-bg: #fff;
+    --high-contrast-fg: #111;
+    --badge-accent: #efef22;
+    
+    /* Animation & Effects */
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow: 0 4px 20px rgba(0,0,0,0.2);
+    --radius: 12px;
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-size-base: 1rem;
+    --font-size-small: 0.9rem;
+    --font-size-large: 1.1rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 3.5rem;
+    --line-height-base: 1.6;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 2.5rem;
+    --spacing-xxl: 3rem;
+    
+    /* Layout */
+    --container-max-width: 1600px;
+    --control-panel-width: 480px;
+    --control-panel-min-width: 400px;
+    --grid-gap: 3rem;
+}

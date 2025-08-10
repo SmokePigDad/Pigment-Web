@@ -1,0 +1,78 @@
+/* Base styles and reset */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base HTML elements */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--darker);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.25), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 175, 64, 0.15), transparent 50%);
+    color: var(--light);
+    min-height: 100vh;
+    padding: var(--spacing-lg);
+    line-height: var(--line-height-base);
+}
+
+/* Focus styles */
+:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+}
+
+/* Accessibility */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px !important;
+    overflow: hidden !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Container */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Typography */
+h1 {
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--light), #b39ddb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    color: var(--light);
+    font-size: var(--font-size-large);
+    max-width: 700px;
+    margin: var(--spacing-sm) auto 0;
+    opacity: 0.8;
+}
+
+.subtitle-brand {
+    font-size: 0.6em;
+    opacity: 0.7;
+    font-weight: 400;
+}

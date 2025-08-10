@@ -1,0 +1,9 @@
+{
+  "name": "pigment-web-server",
+  "version": "1.0.0",
+  "description": "Minimal static server for Pigment-Web",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}

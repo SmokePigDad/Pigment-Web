@@ -1,3 +1,11 @@
 .env
 changes.md
 .roo/
+
+server.log
+*.log
+server.pid
+node_modules/
+dist/build/
+tmp/
+*.tmp
