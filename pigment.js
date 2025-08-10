@@ -8,7 +8,6 @@ const AppState = {
 };
 
 const FAVORITES = new Set();
-const INSPIRE_PROMPTS = [
   "A futuristic city floating above clouds, airships drifting by",
   "Misty enchanted forest at dawn glowing with magical wildlife",
   "Portrait of a robot artist creating a vibrant masterpiece",
@@ -215,7 +214,6 @@ async function inspireMeAPIPrompt() {
     throw new Error('API returned an empty prompt');
   } catch (err) {
     console.error("Error fetching inspiration prompt:", err);
-    return INSPIRE_PROMPTS[Math.floor(Math.random() * INSPIRE_PROMPTS.length)];
   }
 }
 
@@ -315,20 +313,12 @@ document.getElementById('inspire-btn').onclick = async function () {
     let prev = promptElem.value.trim();
     try {
         const newPrompt = await inspireMeAPIPrompt();
-        if (newPrompt === prev && INSPIRE_PROMPTS.length > 1) {
-            let idx = Math.floor(Math.random() * INSPIRE_PROMPTS.length);
-            if (INSPIRE_PROMPTS[idx] === prev) idx = (idx + 1) % INSPIRE_PROMPTS.length;
-            promptElem.value = INSPIRE_PROMPTS[idx];
         } else {
             promptElem.value = newPrompt;
         }
         promptElem.focus();
     } catch {
-        let idx = Math.floor(Math.random() * INSPIRE_PROMPTS.length);
-        if (INSPIRE_PROMPTS.length > 1 && INSPIRE_PROMPTS[idx] === prev) {
-            idx = (idx + 1) % INSPIRE_PROMPTS.length;
         }
-        promptElem.value = INSPIRE_PROMPTS[idx];
         promptElem.focus();
     }
 };
