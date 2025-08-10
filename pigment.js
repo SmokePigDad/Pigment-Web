@@ -476,6 +476,12 @@ function sleep(ms) {
 
 async function handleGenerateClicked() {
   if (AppState.isGenerating) return;
+
+  const generateBtn = document.getElementById('generate-btn');
+  generateBtn.textContent = 'Cancel';
+  generateBtn.classList.remove('btn-generate');
+  generateBtn.classList.add('btn-cancel');
+
   AppState.isGenerating = true;
   AppState.abortGeneration = false;
 
@@ -568,6 +574,9 @@ async function handleGenerateClicked() {
   } finally {
     progressBar.style.width = "100%";
     progressText.textContent = `Done. Generated ${imagesDone} image${imagesDone !== 1 ? "s" : ""}.`;
+    generateBtn.textContent = 'Generate Images';
+    generateBtn.classList.remove('btn-cancel');
+    generateBtn.classList.add('btn-generate');
     AppState.isGenerating = false;
     AppState.currentAbortController = null;
   }
