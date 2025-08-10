@@ -29,7 +29,9 @@ export default async function handler(request, response) {
     const promptText = await poll_res.text();
     
     // Set CORS headers to allow requests from your deployed domain
-    response.setHeader('Access-Control-Allow-Origin', '*'); 
+    // For production, consider restricting Access-Control-Allow-Origin to your specific Vercel domain
+    // or removing it if only same-origin requests are expected.
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET');
     
     return response.status(200).json({ prompt: promptText.trim() });
