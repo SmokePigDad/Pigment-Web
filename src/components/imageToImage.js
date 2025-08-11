@@ -69,19 +69,23 @@ async function handleStartTransformation() {
   
   try {
     const imageUrl = getUploadedImageUrl();
-    
+    console.log('Starting transformation with image URL:', imageUrl ? 'Data URL loaded' : 'No image');
+
     updateTransformationStatus('Preparing image for transformation...');
-    
+
+    console.log('Calling transformImage with prompt:', prompt.trim());
     const transformedBlob = await transformImage({
       prompt: prompt.trim(),
       imageUrl: imageUrl,
       signal: currentAbortController.signal
     });
-    
+
+    console.log('Transformation completed, blob received:', transformedBlob);
     updateTransformationStatus('Transformation complete!');
     displayTransformationResult(transformedBlob);
-    
+
   } catch (error) {
+    console.error('Transformation error:', error);
     if (error.message.includes('cancelled')) {
       updateTransformationStatus('Transformation cancelled');
     } else {

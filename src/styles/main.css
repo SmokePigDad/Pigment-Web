@@ -66,8 +66,8 @@
     display: grid;
 }
 
-/* Image Upload Styles */
-.image-upload-zone {
+/* Image Upload Styles - Scoped to image-to-image tab */
+#image-to-image-content .image-upload-zone {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,12 +82,12 @@
     text-align: center;
 }
 
-.image-upload-zone:hover {
+#image-to-image-content .image-upload-zone:hover {
     border-color: rgba(156, 77, 255, 0.5);
     background: rgba(26, 22, 37, 0.5);
 }
 
-.image-upload-zone.drag-over {
+#image-to-image-content .image-upload-zone.drag-over {
     border-color: var(--primary);
     background: rgba(156, 77, 255, 0.1);
     transform: scale(1.02);
@@ -116,12 +116,12 @@
     margin: 0;
 }
 
-/* Image Preview Styles */
-.image-preview-container {
+/* Image Preview Styles - Scoped to image-to-image tab */
+#image-to-image-content .image-preview-container {
     margin-top: var(--spacing-4);
 }
 
-.image-preview {
+#image-to-image-content .image-preview {
     display: flex;
     align-items: center;
     gap: var(--spacing-4);
@@ -131,7 +131,7 @@
     border-radius: var(--border-radius-md);
 }
 
-.preview-image {
+#image-to-image-content .preview-image {
     width: 80px;
     height: 80px;
     object-fit: cover;
@@ -139,17 +139,17 @@
     border: 1px solid rgba(156, 77, 255, 0.2);
 }
 
-.image-info {
+#image-to-image-content .image-info {
     flex: 1;
 }
 
-.filename {
+#image-to-image-content .filename {
     font-weight: var(--font-weight-medium);
     color: var(--light);
     margin-bottom: var(--spacing-1);
 }
 
-.file-size {
+#image-to-image-content .file-size {
     font-size: var(--font-size-sm);
     color: var(--text-muted);
 }
@@ -160,30 +160,30 @@
     font-size: var(--font-size-xs);
 }
 
-/* Transformation Result Styles */
-.transformation-result {
+/* Transformation Result Styles - Scoped to image-to-image tab */
+#image-to-image-content .transformation-result {
     padding: var(--spacing-6);
 }
 
-.result-comparison {
+#image-to-image-content .result-comparison {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-6);
     align-items: start;
 }
 
-.result-section {
+#image-to-image-content .result-section {
     text-align: center;
 }
 
-.result-section h4 {
+#image-to-image-content .result-section h4 {
     color: var(--light);
     margin-bottom: var(--spacing-4);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
 }
 
-.result-image {
+#image-to-image-content .result-image {
     width: 100%;
     max-width: 400px;
     height: auto;
@@ -192,24 +192,24 @@
     box-shadow: var(--shadow-lg);
 }
 
-/* Prompt Examples */
-.prompt-examples {
+/* Prompt Examples - Scoped to image-to-image tab */
+#image-to-image-content .prompt-examples {
     margin-top: var(--spacing-3);
 }
 
-.examples-label {
+#image-to-image-content .examples-label {
     font-size: var(--font-size-sm);
     color: var(--text-muted);
     margin-bottom: var(--spacing-2);
 }
 
-.example-prompts {
+#image-to-image-content .example-prompts {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-2);
 }
 
-.example-prompt {
+#image-to-image-content .example-prompt {
     display: inline-block;
     padding: var(--spacing-1) var(--spacing-3);
     background: rgba(156, 77, 255, 0.1);
@@ -221,7 +221,7 @@
     transition: var(--transition-normal);
 }
 
-.example-prompt:hover {
+#image-to-image-content .example-prompt:hover {
     background: rgba(156, 77, 255, 0.2);
     border-color: rgba(156, 77, 255, 0.4);
     transform: translateY(-1px);

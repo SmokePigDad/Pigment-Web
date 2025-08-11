@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Hosting Service</title>
+    <style>
+        body { background: #0f0d15; color: #f0f0f0; font-family: Arial, sans-serif; padding: 20px; }
+        button { background: #9c4dff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 10px; }
+        .result { margin: 20px 0; padding: 20px; background: rgba(26, 22, 37, 0.7); border-radius: 12px; }
+        img { max-width: 300px; margin: 10px; border-radius: 8px; }
+        .error { color: #ff4757; }
+        .success { color: #2ed573; }
+    </style>
+</head>
+<body>
+    <h1>Test Image Hosting Service</h1>
+    
+    <input type="file" id="test-upload" accept="image/*">
+    <button onclick="testImageUpload()">Test Upload</button>
+    <button onclick="testKontextWithUpload()">Test Kontext with Upload</button>
+    
+    <div id="result"></div>
+    
+    <script type="module">
+        import { uploadImageToHost, validateImageFile, compressImage } from './src/services/imageHostingService.js';
+        
+        window.testImageUpload = async function() {
+            const fileInput = document.getElementById('test-upload');
+            const file = fileInput.files[0];
+            const resultDiv = document.getElementById('result');
+            
+            if (!file) {
+                resultDiv.innerHTML = '<div class="error">Please select a file first</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing image upload...</p>';
+            
+            try {
+                // Validate file
+                const validation = validateImageFile(file);
+                if (!validation.isValid) {
+                    throw new Error(validation.error);
+                }
+                
+                // Compress if needed
+                let processedFile = file;
+                if (file.size > 2 * 1024 * 1024) {
+                    console.log('Compressing image...');
+                    const compressedBlob = await compressImage(file);
+                    processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
+                }
+                
+                // Upload
+                const url = await uploadImageToHost(processedFile);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">Upload successful!</div>
+                    <p>Original size: ${file.size} bytes</p>
+                    <p>Processed size: ${processedFile.size} bytes</p>
+                    <p>URL: <a href="${url}" target="_blank">${url}</a></p>
+                    <img src="${url}" alt="Uploaded image">
+                `;
+                
+                // Store URL for Kontext test
+                window.testImageUrl = url;
+                
+            } catch (error) {
+                console.error('Upload test failed:', error);
+                resultDiv.innerHTML = `<div class="error">Upload failed: ${error.message}</div>`;
+            }
+        };
+        
+        window.testKontextWithUpload = async function() {
+            const resultDiv = document.getElementById('result');
+            
+            if (!window.testImageUrl) {
+                resultDiv.innerHTML = '<div class="error">Please upload an image first</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing Kontext transformation...</p>';
+            
+            try {
+                const prompt = 'make it look like a watercolor painting';
+                const encodedPrompt = encodeURIComponent(prompt);
+                const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(window.testImageUrl)}`;
+                
+                console.log('Testing Kontext API with uploaded image...');
+                console.log('API URL:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API error: ${response.status} - ${errorText}`);
+                }
+                
+                const blob = await response.blob();
+                const resultImageUrl = URL.createObjectURL(blob);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">Kontext transformation successful!</div>
+                    <div style="display: flex; gap: 20px;">
+                        <div>
+                            <p>Original:</p>
+                            <img src="${window.testImageUrl}" alt="Original">
+                        </div>
+                        <div>
+                            <p>Transformed:</p>
+                            <img src="${resultImageUrl}" alt="Transformed">
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Kontext test failed:', error);
+                resultDiv.innerHTML = `<div class="error">Kontext test failed: ${error.message}</div>`;
+            }
+        };
+        
+        console.log('Image hosting test page loaded');
+    </script>
+</body>
+</html>

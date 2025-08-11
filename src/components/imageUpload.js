@@ -1,6 +1,7 @@
 // Image upload component functionality
 
 import { getElementById } from '../utils/helpers.js';
+import { validateImageFile, compressImage } from '../services/imageHostingService.js';
 
 // Upload state
 let uploadedImageUrl = null;
@@ -87,21 +88,31 @@ function handleFileSelect(event) {
  * Handles file processing and validation
  * @param {File} file - Selected file
  */
-function handleFile(file) {
-  // Validate file type
-  if (!SUPPORTED_FORMATS.includes(file.type)) {
-    showUploadError('Please select a valid image file (JPG, PNG, or WebP)');
+async function handleFile(file) {
+  console.log('Processing file:', file.name, file.type, file.size);
+
+  // Use the new validation function
+  const validation = validateImageFile(file);
+  if (!validation.isValid) {
+    showUploadError(validation.error);
     return;
   }
 
-  // Validate file size
-  if (file.size > MAX_FILE_SIZE) {
-    showUploadError('File size must be less than 10MB');
-    return;
+  // Compress image if it's large
+  let processedFile = file;
+  if (file.size > 2 * 1024 * 1024) { // 2MB
+    try {
+      console.log('Compressing large image...');
+      const compressedBlob = await compressImage(file);
+      processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
+      console.log('Image compressed from', file.size, 'to', processedFile.size, 'bytes');
+    } catch (error) {
+      console.warn('Failed to compress image, using original:', error);
+    }
   }
 
-  uploadedImageFile = file;
-  processImageFile(file);
+  uploadedImageFile = processedFile;
+  processImageFile(processedFile);
 }
 
 /**

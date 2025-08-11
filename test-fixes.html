@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test All Fixes - Pigment</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="src/styles/variables.css">
+<link rel="stylesheet" href="src/styles/base.css">
+<link rel="stylesheet" href="src/styles/components.css">
+<link rel="stylesheet" href="src/styles/gallery.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Pigment <span class="subtitle-brand">Test Fixes</span></h1>
+    </div>
+    <p class="subtitle">
+        Testing the fixes for title visibility, button colors, and transformation functionality.
+    </p>
+</header>
+
+<!-- Test Gallery Buttons -->
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title"><i class="fas fa-images"></i> Test Gallery Buttons</h2>
+        <div class="gallery-controls" role="group" aria-label="Gallery actions">
+            <button class="btn" aria-label="Download favorites" type="button" title="Download all favorite images">
+                <i class="fas fa-download"></i>
+            </button>
+            <button class="btn btn-delete-non-fav" aria-label="Delete non-favorites" type="button" title="Delete all non-favorite images">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+            <button class="btn" aria-label="Clear gallery" type="button" title="Clear all images from gallery">
+                <i class="fas fa-broom"></i>
+            </button>
+        </div>
+    </div>
+    <p>These buttons should have the correct colors (not affected by the new CSS).</p>
+</div>
+
+<!-- Image-to-Image Tab Content -->
+<div id="image-to-image-content" class="tab-content generator-container">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-exchange-alt"></i> Image Transformation Test</h2>
+    
+    <!-- Image Upload Section -->
+    <div class="form-group">
+        <label><i class="fas fa-upload"></i> Upload Source Image</label>
+        <div id="image-upload-zone" class="image-upload-zone">
+            <div class="upload-content">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p class="upload-text">Click to upload or drag & drop</p>
+                <p class="upload-hint">Supports JPG, PNG, WebP (max 5MB)</p>
+            </div>
+            <input type="file" id="image-upload-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display: none;">
+        </div>
+        <div id="image-preview-container" class="image-preview-container" style="display: none;"></div>
+        <div id="upload-error-message" class="error-message" style="display: none;"></div>
+    </div>
+    
+    <!-- Transformation Prompt -->
+    <div class="form-group">
+        <label for="transformation-prompt"><i class="fas fa-comment-dots"></i> Transformation Prompt</label>
+        <textarea
+            id="transformation-prompt"
+            class="input-control"
+            placeholder="Describe how you want to transform the image..."
+            aria-label="Transformation prompt"
+        ></textarea>
+        <div class="prompt-examples">
+            <p class="examples-label">Example prompts:</p>
+            <div class="example-prompts">
+                <span class="example-prompt" data-prompt="make it look like a watercolor painting">watercolor painting</span>
+                <span class="example-prompt" data-prompt="add cyberpunk neon lighting effects">cyberpunk style</span>
+                <span class="example-prompt" data-prompt="convert to black and white pencil sketch">pencil sketch</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transform Button -->
+    <button id="transform-btn" class="btn btn-generate" disabled>
+        <i class="fas fa-exchange-alt"></i> Transform Image
+    </button>
+    
+    <!-- Progress and Status -->
+    <div id="transform-progress-container" class="progress-container" style="display: none;">
+        <div class="progress-bar indeterminate"></div>
+    </div>
+    <div class="progress-text" id="transform-status-message">Upload an image to get started</div>
+    <div id="transform-error-message" class="error-message" style="display: none;"></div>
+</div>
+
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title"><i class="fas fa-images"></i> Transformation Result</h2>
+        <div class="gallery-controls">
+            <button id="download-result-btn" class="btn" style="display: none;">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+    <div id="transformation-result" class="transformation-result" style="display: none;"></div>
+</div>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeImageUpload } from './src/components/imageUpload.js';
+import { initializeImageToImage } from './src/components/imageToImage.js';
+
+console.log('Starting test with fixes...');
+
+// Initialize components
+setTimeout(() => {
+    initializeImageUpload();
+    initializeImageToImage();
+    console.log('Test initialized with fixes');
+}, 100);
+
+// Test the title visibility
+console.log('Title element:', document.querySelector('h1'));
+console.log('Title computed style:', window.getComputedStyle(document.querySelector('h1')));
+
+// Test button colors
+setTimeout(() => {
+    const galleryButtons = document.querySelectorAll('.gallery-controls .btn');
+    console.log('Gallery buttons found:', galleryButtons.length);
+    galleryButtons.forEach((btn, i) => {
+        const style = window.getComputedStyle(btn);
+        console.log(`Button ${i} background:`, style.background);
+    });
+}, 500);
+</script>
+
+</body>
+</html>

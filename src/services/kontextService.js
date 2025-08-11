@@ -1,6 +1,7 @@
 // Service for Kontext image-to-image transformation API
 
 import { API_CONFIG } from '../config/constants.js';
+import { uploadImageToHost, dataUrlToBlob } from './imageHostingService.js';
 
 /**
  * Uploads image to a temporary hosting service and returns URL
@@ -43,10 +44,13 @@ export async function transformImage(params) {
   let publicImageUrl = imageUrl;
 
   if (imageUrl.startsWith('data:')) {
-    // Try to upload to a temporary service
+    // Convert data URL to blob and upload to hosting service
     try {
-      console.log('Uploading image to temporary service...');
-      publicImageUrl = await uploadToTempService(imageUrl);
+      console.log('Converting data URL to blob...');
+      const blob = await dataUrlToBlob(imageUrl);
+
+      console.log('Uploading image to hosting service...');
+      publicImageUrl = await uploadImageToHost(blob);
       console.log('Image uploaded successfully:', publicImageUrl);
 
       if (!publicImageUrl || publicImageUrl.startsWith('data:')) {
@@ -54,7 +58,7 @@ export async function transformImage(params) {
       }
     } catch (error) {
       console.error('Failed to upload image:', error);
-      throw new Error('Unable to upload image. Please try with a smaller image or check your internet connection.');
+      throw new Error(`Unable to upload image: ${error.message}`);
     }
   }
 
@@ -110,66 +114,7 @@ export async function transformImage(params) {
   }
 }
 
-/**
- * Uploads image data URL to a temporary hosting service
- * @param {string} dataUrl - Data URL of the image
- * @returns {Promise<string>} Public URL of uploaded image
- */
-async function uploadToTempService(dataUrl) {
-  // Convert data URL to blob
-  const response = await fetch(dataUrl);
-  const blob = await response.blob();
 
-  // For this implementation, we'll use imgbb as a temporary hosting service
-  // In production, you might want to use your own backend or a service like Cloudinary
-
-  try {
-    // Try using file.io as a temporary hosting service
-    const formData = new FormData();
-    formData.append('file', blob, 'image.png');
-
-    const uploadResponse = await fetch('https://file.io', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (uploadResponse.ok) {
-      const result = await uploadResponse.json();
-      if (result.success) {
-        console.log('Image uploaded to file.io:', result.link);
-        return result.link;
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to upload to file.io:', error);
-  }
-
-  // Try alternative service
-  try {
-    const formData = new FormData();
-    formData.append('file', blob, 'image.png');
-
-    const uploadResponse = await fetch('https://tmpfiles.org/api/v1/upload', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (uploadResponse.ok) {
-      const result = await uploadResponse.json();
-      if (result.data && result.data.url) {
-        const url = result.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-        console.log('Image uploaded to tmpfiles.org:', url);
-        return url;
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to upload to tmpfiles.org:', error);
-  }
-
-  // Fallback: try a different approach - use the data URL directly
-  // Some APIs might accept data URLs, though it's not guaranteed
-  return dataUrl;
-}
 
 /**
  * Validates if a file is a supported image format

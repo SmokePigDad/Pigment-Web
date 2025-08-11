@@ -64,26 +64,9 @@ h1 {
     line-height: var(--line-height-tight);
     color: var(--light);
     text-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
-    /* Ensure text is always visible */
+    /* Use solid color for reliability */
+    background: none;
     -webkit-text-fill-color: var(--light);
-}
-
-/* Apply gradient text only if background-clip is fully supported and working */
-@supports (background-clip: text) and (-webkit-background-clip: text) {
-    h1 {
-        background: linear-gradient(135deg, var(--primary-light), var(--accent), var(--secondary));
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    /* Fallback for browsers where gradient text doesn't work properly */
-    @media (max-width: 768px) {
-        h1 {
-            -webkit-text-fill-color: var(--light);
-            background: none;
-        }
-    }
 }
 
 .subtitle {
