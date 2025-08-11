@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Kontext API Test</title>
+    <style>
+        body { background: #0f0d15; color: #f0f0f0; font-family: Arial, sans-serif; padding: 20px; }
+        button { background: #9c4dff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 10px; }
+        .result { margin: 20px 0; padding: 20px; background: rgba(26, 22, 37, 0.7); border-radius: 12px; }
+        img { max-width: 300px; margin: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Quick Kontext API Test</h1>
+    
+    <button onclick="testKontextAPI()">Test Kontext API</button>
+    <button onclick="testWithDifferentImage()">Test with Different Image</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        async function testKontextAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing Kontext API...</p>';
+            
+            try {
+                // Test with a simple public image
+                const prompt = 'make it look like a watercolor painting';
+                const imageUrl = 'https://picsum.photos/400/400';
+                
+                const encodedPrompt = encodeURIComponent(prompt);
+                const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(imageUrl)}`;
+                
+                console.log('Testing API URL:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                console.log('Response status:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API error: ${response.status} - ${errorText}`);
+                }
+                
+                const blob = await response.blob();
+                console.log('Received blob:', blob.type, blob.size);
+                
+                const resultImageUrl = URL.createObjectURL(blob);
+                
+                resultDiv.innerHTML = `
+                    <h3>Success!</h3>
+                    <div style="display: flex; gap: 20px;">
+                        <div>
+                            <p>Original:</p>
+                            <img src="${imageUrl}" alt="Original">
+                        </div>
+                        <div>
+                            <p>Transformed:</p>
+                            <img src="${resultImageUrl}" alt="Transformed">
+                        </div>
+                    </div>
+                    <p>Prompt: "${prompt}"</p>
+                `;
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                resultDiv.innerHTML = `<div style="color: #ff4757;">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testWithDifferentImage() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing with different image...</p>';
+            
+            try {
+                const prompt = 'convert to black and white sketch';
+                const imageUrl = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop';
+                
+                const encodedPrompt = encodeURIComponent(prompt);
+                const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(imageUrl)}`;
+                
+                console.log('Testing API URL:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                console.log('Response status:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API error: ${response.status} - ${errorText}`);
+                }
+                
+                const blob = await response.blob();
+                console.log('Received blob:', blob.type, blob.size);
+                
+                const resultImageUrl = URL.createObjectURL(blob);
+                
+                resultDiv.innerHTML = `
+                    <h3>Success with Different Image!</h3>
+                    <div style="display: flex; gap: 20px;">
+                        <div>
+                            <p>Original:</p>
+                            <img src="${imageUrl}" alt="Original">
+                        </div>
+                        <div>
+                            <p>Transformed:</p>
+                            <img src="${resultImageUrl}" alt="Transformed">
+                        </div>
+                    </div>
+                    <p>Prompt: "${prompt}"</p>
+                `;
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                resultDiv.innerHTML = `<div style="color: #ff4757;">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

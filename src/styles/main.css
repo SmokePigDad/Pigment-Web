@@ -154,7 +154,8 @@
     color: var(--text-muted);
 }
 
-.btn-small {
+/* Image upload specific button styles */
+.image-preview .btn-small {
     padding: var(--spacing-2) var(--spacing-3);
     font-size: var(--font-size-xs);
 }

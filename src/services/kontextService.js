@@ -35,45 +35,72 @@ export async function uploadImageForTransformation(imageFile) {
  */
 export async function transformImage(params) {
   const { prompt, imageUrl, signal } = params;
-  
+
   // URL encode the prompt
   const encodedPrompt = encodeURIComponent(prompt);
-  
+
   // For data URLs, we need to upload to a temporary service first
   let publicImageUrl = imageUrl;
 
   if (imageUrl.startsWith('data:')) {
-    // Try to upload to a temporary service, fallback to data URL
+    // Try to upload to a temporary service
     try {
+      console.log('Uploading image to temporary service...');
       publicImageUrl = await uploadToTempService(imageUrl);
+      console.log('Image uploaded successfully:', publicImageUrl);
+
+      if (!publicImageUrl || publicImageUrl.startsWith('data:')) {
+        throw new Error('Failed to get public URL for image');
+      }
     } catch (error) {
-      console.warn('Failed to upload image, using data URL directly:', error);
-      // Some APIs might accept data URLs directly
-      publicImageUrl = imageUrl;
+      console.error('Failed to upload image:', error);
+      throw new Error('Unable to upload image. Please try with a smaller image or check your internet connection.');
     }
   }
-  
+
   // Build the Kontext API URL
   const apiUrl = `${API_CONFIG.POLLINATIONS_BASE_URL}/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(publicImageUrl)}`;
-  
+
+  console.log('Making API request to:', apiUrl.substring(0, 200) + '...');
+
   try {
-    const response = await fetch(apiUrl, { signal });
+    const response = await fetch(apiUrl, {
+      signal,
+      method: 'GET',
+      headers: {
+        'Accept': 'image/*'
+      }
+    });
     
+    console.log('API response status:', response.status, response.statusText);
+
     if (response.status === 429) {
       throw new Error('Rate limit exceeded. Please wait and try again.');
     }
-    
+
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Transformation failed (${response.status}): ${errorText}`);
+      console.error('API error response:', errorText);
+      throw new Error(`Transformation failed (${response.status}): ${errorText || response.statusText}`);
     }
-    
+
     const blob = await response.blob();
-    
-    if (!blob || !blob.type.startsWith('image')) {
-      throw new Error('API did not return a valid image');
+    console.log('Received blob:', blob.type, blob.size);
+
+    if (!blob || blob.size === 0) {
+      throw new Error('API returned an empty response');
     }
-    
+
+    if (!blob.type.startsWith('image')) {
+      console.warn('Unexpected blob type:', blob.type);
+      // Some APIs might return images with generic content types
+      if (blob.size > 1000) { // Assume it's an image if it's large enough
+        console.log('Assuming blob is an image based on size');
+      } else {
+        throw new Error('API did not return a valid image');
+      }
+    }
+
     return blob;
   } catch (error) {
     if (error.name === 'AbortError') {
@@ -97,22 +124,46 @@ async function uploadToTempService(dataUrl) {
   // In production, you might want to use your own backend or a service like Cloudinary
 
   try {
-    // Try using a simple temporary file hosting service
+    // Try using file.io as a temporary hosting service
     const formData = new FormData();
     formData.append('file', blob, 'image.png');
 
-    // Using 0x0.st as a simple temporary hosting service
-    const uploadResponse = await fetch('https://0x0.st', {
+    const uploadResponse = await fetch('https://file.io', {
       method: 'POST',
       body: formData
     });
 
     if (uploadResponse.ok) {
-      const url = await uploadResponse.text();
-      return url.trim();
+      const result = await uploadResponse.json();
+      if (result.success) {
+        console.log('Image uploaded to file.io:', result.link);
+        return result.link;
+      }
     }
   } catch (error) {
-    console.warn('Failed to upload to temporary service:', error);
+    console.warn('Failed to upload to file.io:', error);
+  }
+
+  // Try alternative service
+  try {
+    const formData = new FormData();
+    formData.append('file', blob, 'image.png');
+
+    const uploadResponse = await fetch('https://tmpfiles.org/api/v1/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (uploadResponse.ok) {
+      const result = await uploadResponse.json();
+      if (result.data && result.data.url) {
+        const url = result.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+        console.log('Image uploaded to tmpfiles.org:', url);
+        return url;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to upload to tmpfiles.org:', error);
   }
 
   // Fallback: try a different approach - use the data URL directly
