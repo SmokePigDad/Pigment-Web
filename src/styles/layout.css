@@ -58,15 +58,29 @@ footer {
     align-items: flex-start;
 }
 
-/* Panel base styles */
+/* Enhanced Panel base styles */
 .gallery-section,
 .control-panel {
-    background: rgba(26, 22, 38, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    padding: var(--spacing-xl);
+    background: rgba(26, 22, 37, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(156, 77, 255, 0.15);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+    padding: var(--spacing-10);
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-section::before,
+.control-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+    opacity: 0.6;
 }
 
 .panel-title {

@@ -1,47 +1,138 @@
 /* CSS Custom Properties (Variables) */
 
 :root {
-    /* Color Palette */
-    --primary: #8a2be2;
+    /* Enhanced Color Palette */
+    --primary: #9c4dff;
+    --primary-light: #b366ff;
     --primary-dark: #7b24cb;
-    --secondary: #ffaf40;
-    --dark: #121019;
-    --darker: #0d0b12;
-    --light: #e2e2e2;
-    --gray: #4a4a68;
-    --success: #4caf50;
-    --warning: #ff9800;
-    --error: #f44336;
-    --focus-ring: #ffc973;
+    --primary-darker: #5a1a96;
+    --secondary: #ff6b35;
+    --secondary-light: #ff8555;
+    --secondary-dark: #e55a2b;
+    --accent: #00d4aa;
+    --accent-light: #26e0bb;
+    --accent-dark: #00b894;
+
+    /* Background Colors */
+    --dark: #0f0d15;
+    --darker: #0a0810;
+    --surface: #1a1625;
+    --surface-light: #252030;
+    --surface-lighter: #2f2a3a;
+
+    /* Text Colors */
+    --light: #f0f0f0;
+    --light-secondary: #d0d0d0;
+    --gray: #8a8a9a;
+    --gray-light: #a0a0b0;
+    --gray-dark: #6a6a7a;
+
+    /* Semantic Colors */
+    --success: #00d084;
+    --success-light: #26e0a3;
+    --warning: #ffb347;
+    --warning-light: #ffc266;
+    --error: #ff4757;
+    --error-light: #ff6b7a;
+    --info: #3742fa;
+    --info-light: #5352ed;
+
+    /* Interactive States */
+    --focus-ring: #9c4dff;
+    --hover-overlay: rgba(156, 77, 255, 0.1);
+    --active-overlay: rgba(156, 77, 255, 0.2);
+    --disabled-overlay: rgba(255, 255, 255, 0.1);
+
+    /* High Contrast Support */
     --high-contrast-bg: #fff;
     --high-contrast-fg: #111;
-    --badge-accent: #efef22;
+    --badge-accent: #ffd700;
     
     /* Animation & Effects */
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --shadow: 0 4px 20px rgba(0,0,0,0.2);
     --radius: 12px;
     
-    /* Typography */
+    /* Enhanced Typography System */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --font-size-base: 1rem;
-    --font-size-small: 0.9rem;
-    --font-size-large: 1.1rem;
-    --font-size-xl: 1.5rem;
-    --font-size-xxl: 3.5rem;
-    --line-height-base: 1.6;
+    --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+    /* Font Sizes - Modular Scale (1.25 ratio) */
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-md: 1.125rem;    /* 18px */
+    --font-size-lg: 1.25rem;     /* 20px */
+    --font-size-xl: 1.5rem;      /* 24px */
+    --font-size-2xl: 1.875rem;   /* 30px */
+    --font-size-3xl: 2.25rem;    /* 36px */
+    --font-size-4xl: 3rem;       /* 48px */
+    --font-size-5xl: 3.75rem;    /* 60px */
+
+    /* Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
     
-    /* Spacing */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 2.5rem;
-    --spacing-xxl: 3rem;
-    
-    /* Layout */
+    /* Enhanced Spacing System */
+    --spacing-0: 0;
+    --spacing-1: 0.25rem;    /* 4px */
+    --spacing-2: 0.5rem;     /* 8px */
+    --spacing-3: 0.75rem;    /* 12px */
+    --spacing-4: 1rem;       /* 16px */
+    --spacing-5: 1.25rem;    /* 20px */
+    --spacing-6: 1.5rem;     /* 24px */
+    --spacing-8: 2rem;       /* 32px */
+    --spacing-10: 2.5rem;    /* 40px */
+    --spacing-12: 3rem;      /* 48px */
+    --spacing-16: 4rem;      /* 64px */
+    --spacing-20: 5rem;      /* 80px */
+    --spacing-24: 6rem;      /* 96px */
+
+    /* Legacy spacing (for backward compatibility) */
+    --spacing-xs: var(--spacing-2);
+    --spacing-sm: var(--spacing-4);
+    --spacing-md: var(--spacing-6);
+    --spacing-lg: var(--spacing-8);
+    --spacing-xl: var(--spacing-10);
+    --spacing-xxl: var(--spacing-12);
+
+    /* Enhanced Layout */
     --container-max-width: 1600px;
-    --control-panel-width: 480px;
-    --control-panel-min-width: 400px;
-    --grid-gap: 3rem;
+    --control-panel-width: 500px;
+    --control-panel-min-width: 420px;
+    --grid-gap: var(--spacing-12);
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+    --border-radius-full: 9999px;
+
+    /* Enhanced Animations & Effects */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: var(--transition-normal);
+
+    /* Enhanced Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-glow: 0 0 20px rgba(156, 77, 255, 0.3);
+    --shadow: var(--shadow-lg);
+
+    /* Border Radius (legacy) */
+    --radius: var(--border-radius-md);
 }

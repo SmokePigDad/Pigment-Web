@@ -17,20 +17,24 @@ html {
 body {
     font-family: var(--font-family);
     background: var(--darker);
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.25), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255, 175, 64, 0.15), transparent 50%);
+    background-image:
+        radial-gradient(circle at 15% 25%, rgba(156, 77, 255, 0.15), transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(255, 107, 53, 0.12), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(0, 212, 170, 0.08), transparent 60%);
     color: var(--light);
     min-height: 100vh;
     padding: var(--spacing-lg);
-    line-height: var(--line-height-base);
+    line-height: var(--line-height-normal);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
 }
 
-/* Focus styles */
+/* Enhanced Focus styles */
 :focus-visible {
-    outline: 3px solid var(--secondary);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
-    border-radius: var(--radius);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 0 0 4px rgba(156, 77, 255, 0.2);
 }
 
 /* Accessibility */
@@ -53,15 +57,17 @@ body {
     padding: 0;
 }
 
-/* Typography */
+/* Enhanced Typography */
 h1 {
-    font-size: var(--font-size-xxl);
-    font-weight: 700;
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
     color: var(--light); /* Fallback color for browsers that don't support background-clip */
-    background: linear-gradient(90deg, var(--light), #b39ddb);
+    background: linear-gradient(135deg, var(--primary-light), var(--accent), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
 }
 
 /* Fallback for browsers that don't support background-clip: text */
@@ -73,15 +79,18 @@ h1 {
 }
 
 .subtitle {
-    color: var(--light);
-    font-size: var(--font-size-large);
+    color: var(--light-secondary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-relaxed);
     max-width: 700px;
-    margin: var(--spacing-sm) auto 0;
-    opacity: 0.8;
+    margin: var(--spacing-4) auto 0;
+    opacity: 0.9;
 }
 
 .subtitle-brand {
-    font-size: 0.6em;
-    opacity: 0.7;
-    font-weight: 400;
+    font-size: 0.55em;
+    opacity: 0.8;
+    font-weight: var(--font-weight-normal);
+    color: var(--accent);
 }
