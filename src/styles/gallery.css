@@ -35,6 +35,23 @@
     font-size: 0.85rem;
     text-transform: none;
     letter-spacing: normal;
+    /* Override gradient backgrounds with solid colors */
+    background: var(--surface-light) !important;
+    color: var(--light) !important;
+    border: 1px solid rgba(156, 77, 255, 0.3) !important;
+    box-shadow: none !important;
+}
+
+.gallery-controls .btn:hover {
+    background: var(--surface-lighter) !important;
+    border-color: var(--primary) !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(156, 77, 255, 0.2) !important;
+}
+
+.gallery-controls .btn:active {
+    background: var(--primary) !important;
+    color: var(--high-contrast-bg) !important;
 }
 
 /* Enhanced Gallery grid */

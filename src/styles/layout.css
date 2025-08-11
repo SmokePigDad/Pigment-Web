@@ -13,6 +13,16 @@ header {
     justify-content: center;
     gap: 15px;
     margin-bottom: var(--spacing-sm);
+    /* Ensure no background on logo container */
+    background: none !important;
+    background-image: none !important;
+}
+
+.logo h1 {
+    /* Extra specificity to ensure no background on title */
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
 }
 
 .logo-icon {
