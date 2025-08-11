@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/inspire.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "headers": [
     {
       "source": "/src/(.*)",
