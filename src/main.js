@@ -14,6 +14,9 @@ import { initializeImageComparison } from './components/imageComparison.js';
 import { initializeGalleryFilter } from './components/galleryFilter.js';
 import { initializeSettingsPanel } from './components/settingsPanel.js';
 import { initializeKeyboardShortcuts } from './components/keyboardShortcuts.js';
+import { initializeTabSystem } from './components/tabSystem.js';
+import { initializeImageUpload } from './components/imageUpload.js';
+import { initializeImageToImage } from './components/imageToImage.js';
 
 /**
  * Initializes the entire application
@@ -22,6 +25,9 @@ function initializeApp() {
   console.log('Initializing Pigment application...');
   
   try {
+    // Initialize tab system first
+    initializeTabSystem();
+
     // Initialize all components
     initializeModelSelector();
     initializeArtStyleSelector();
@@ -39,6 +45,10 @@ function initializeApp() {
     initializeGalleryFilter();
     initializeSettingsPanel();
     initializeKeyboardShortcuts();
+
+    // Initialize image-to-image features
+    initializeImageUpload();
+    initializeImageToImage();
     
     console.log('Pigment application initialized successfully');
   } catch (error) {
