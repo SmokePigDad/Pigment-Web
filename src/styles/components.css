@@ -70,11 +70,21 @@
 }
 
 .btn-download-fav {
+    background: #ff9800;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+}
+
+.btn-download-fav:hover {
+    background: #f57c00;
+    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+}
+
+.btn-delete-non-fav {
     background: #e91e63;
     box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
 }
 
-.btn-download-fav:hover {
+.btn-delete-non-fav:hover {
     background: #c2185b;
     box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
 }
