@@ -57,10 +57,19 @@ body {
 h1 {
     font-size: var(--font-size-xxl);
     font-weight: 700;
+    color: var(--light); /* Fallback color for browsers that don't support background-clip */
     background: linear-gradient(90deg, var(--light), #b39ddb);
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Fallback for browsers that don't support background-clip: text */
+@supports not (background-clip: text) {
+    h1 {
+        background: none;
+        color: var(--light);
+    }
 }
 
 .subtitle {
