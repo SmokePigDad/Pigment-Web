@@ -62,13 +62,15 @@ h1 {
     font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-tight);
-    color: var(--light);
+    color: var(--light) !important;
     text-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
-    /* Use solid color for reliable visibility */
-    background: none;
-    -webkit-background-clip: initial;
-    background-clip: initial;
-    -webkit-text-fill-color: var(--light);
+    /* Completely remove any background */
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: var(--light) !important;
 }
 
 .subtitle {
