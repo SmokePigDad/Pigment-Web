@@ -8,6 +8,12 @@ import { initializeBatchToggle } from './components/batchToggle.js';
 import { initializeInspireButton } from './components/inspireButton.js';
 import { initializeGallery } from './components/gallery.js';
 import { initializeImageGenerator } from './components/imageGenerator.js';
+import { initializePromptHistory } from './components/promptHistory.js';
+import { initializeSeedControl } from './components/seedControl.js';
+import { initializeImageComparison } from './components/imageComparison.js';
+import { initializeGalleryFilter } from './components/galleryFilter.js';
+import { initializeSettingsPanel } from './components/settingsPanel.js';
+import { initializeKeyboardShortcuts } from './components/keyboardShortcuts.js';
 
 /**
  * Initializes the entire application
@@ -25,6 +31,14 @@ function initializeApp() {
     initializeInspireButton();
     initializeGallery();
     initializeImageGenerator();
+
+    // Initialize new enhanced features
+    initializePromptHistory();
+    initializeSeedControl();
+    initializeImageComparison();
+    initializeGalleryFilter();
+    initializeSettingsPanel();
+    initializeKeyboardShortcuts();
     
     console.log('Pigment application initialized successfully');
   } catch (error) {

@@ -17,9 +17,15 @@ This application has been refactored into a modular architecture for better main
 │   │   ├── batchToggle.js
 │   │   ├── countSelector.js
 │   │   ├── gallery.js
+│   │   ├── galleryFilter.js
+│   │   ├── imageComparison.js
 │   │   ├── imageGenerator.js
 │   │   ├── inspireButton.js
+│   │   ├── keyboardShortcuts.js
 │   │   ├── modelSelector.js
+│   │   ├── promptHistory.js
+│   │   ├── seedControl.js
+│   │   ├── settingsPanel.js
 │   │   └── sizeSelector.js
 │   ├── config/           # Configuration and constants
 │   │   ├── artStyles.js
@@ -52,9 +58,15 @@ This application has been refactored into a modular architecture for better main
 - **batchToggle.js**: Handles batch mode toggle functionality
 - **countSelector.js**: Manages image count dropdown and selection
 - **gallery.js**: Image gallery display and management
+- **galleryFilter.js**: Advanced filtering and search functionality
+- **imageComparison.js**: Side-by-side image comparison tool
 - **imageGenerator.js**: Core image generation logic
 - **inspireButton.js**: AI prompt inspiration functionality
+- **keyboardShortcuts.js**: Keyboard shortcuts and help system
 - **modelSelector.js**: AI model selection and configuration
+- **promptHistory.js**: Prompt history and templates management
+- **seedControl.js**: Seed control for reproducible generation
+- **settingsPanel.js**: User preferences and settings management
 - **sizeSelector.js**: Manages image size dropdown and selection
 
 ### Services (`src/services/`)
@@ -81,13 +93,28 @@ This application has been refactored into a modular architecture for better main
 
 ## 🚀 Features
 
-- **AI Image Generation**: Multiple AI models (GPT-Image, Flux, Turbo)
-- **Art Style Selection**: 100+ predefined art styles
-- **Batch Generation**: Generate images in all art styles at once
-- **AI Prompt Inspiration**: Get creative prompts from AI
-- **Image Management**: Favorite, download, and organize images
-- **Responsive Design**: Works on desktop and mobile devices
+### Core Generation
+- **Multiple AI Models**: Choose from various AI models (GPT-Image, Flux, Turbo)
+- **100+ Art Styles**: Extensive collection of artistic styles and techniques
+- **24+ Image Sizes**: From mobile formats to 4K UHD resolutions
+- **Batch Generation**: Generate images in all available art styles simultaneously
+- **Seed Control**: Reproducible generation with custom or random seeds
+- **Advanced Options**: Remove watermark, private generation, enhance prompt, transparency
+
+### Enhanced Gallery
+- **Image Gallery**: View, favorite, and download generated images with proper aspect ratios
+- **Image Comparison**: Side-by-side comparison tool for up to 4 images
+- **Advanced Filtering**: Search by prompt, filter by style/size, favorites-only view
+- **Bulk Operations**: Download all images or favorites with one click
+- **Image Viewing**: Open images in new tabs for larger viewing
+
+### User Experience
+- **Prompt History**: Automatic saving and recall of previous prompts
+- **Keyboard Shortcuts**: Full keyboard navigation and shortcuts (Ctrl+? for help)
+- **Settings Panel**: Customizable user preferences and interface options
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Accessibility**: ARIA labels, keyboard navigation, screen reader support
+- **No API Keys Required**: Uses free Pollinations AI service
 
 ## 🛠️ Development
 

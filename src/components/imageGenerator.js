@@ -5,6 +5,7 @@ import { buildImageUrl, fetchImageWithRetry, generateRandomSeed } from '../servi
 import { setGenerationState, abortGeneration, addRevokeURL, AppState } from '../utils/stateManager.js';
 import { createImageCard, showGalleryStatus } from './gallery.js';
 import { isBatchModeEnabled } from './batchToggle.js';
+import { getCurrentSeed } from './seedControl.js';
 import { getElementById, sleep, pluralize } from '../utils/helpers.js';
 import { API_CONFIG } from '../config/constants.js';
 
@@ -198,8 +199,9 @@ function buildGenerationQueue(params) {
   if (isBatchModeEnabled()) {
     // Batch mode: generate one image for each art style
     const allStyles = getArtStyleNames();
-    const batchSeed = generateRandomSeed();
-    
+    const userSeed = getCurrentSeed();
+    const batchSeed = userSeed || generateRandomSeed();
+
     for (const style of allStyles) {
       queue.push({
         prompt: buildPrompt(basePrompt, style),
@@ -216,8 +218,10 @@ function buildGenerationQueue(params) {
     }
   } else {
     // Normal mode: generate specified number of images
+    const userSeed = getCurrentSeed();
+
     for (let i = 0; i < count; i++) {
-      const seed = generateRandomSeed();
+      const seed = userSeed || generateRandomSeed();
       queue.push({
         prompt: buildPrompt(basePrompt, selectedStyle),
         model: selectedModel,

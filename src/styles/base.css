@@ -62,19 +62,20 @@ h1 {
     font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-tight);
-    color: var(--light); /* Fallback color for browsers that don't support background-clip */
+    color: var(--light);
+    text-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
+    /* Use a more reliable gradient text approach */
     background: linear-gradient(135deg, var(--primary-light), var(--accent), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
+    /* Only make text transparent if background-clip is supported */
+    -webkit-text-fill-color: var(--light);
 }
 
-/* Fallback for browsers that don't support background-clip: text */
-@supports not (background-clip: text) {
+/* Apply gradient text only if background-clip is fully supported */
+@supports (background-clip: text) and (-webkit-background-clip: text) {
     h1 {
-        background: none;
-        color: var(--light);
+        -webkit-text-fill-color: transparent;
     }
 }
 
