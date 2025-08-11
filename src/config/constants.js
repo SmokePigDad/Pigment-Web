@@ -59,12 +59,30 @@ export const DEFAULT_MODELS = [
 ];
 
 export const IMAGE_SIZES = [
-  { value: "512,512", label: "512×512 (Square)" },
-  { value: "1024,1024", label: "1024×1024 (Square)", selected: true },
+  { value: "256,256", label: "256×256 (Tiny Square)" },
+  { value: "512,512", label: "512×512 (Small Square)" },
+  { value: "768,768", label: "768×768 (Medium Square)" },
+  { value: "1024,1024", label: "1024×1024 (Large Square)", selected: true },
+  { value: "1536,1536", label: "1536×1536 (XL Square)" },
+  { value: "2048,2048", label: "2048×2048 (XXL Square)" },
+  { value: "480,640", label: "480×640 (3:4 Portrait)" },
   { value: "640,960", label: "640×960 (2:3 Portrait)" },
+  { value: "768,1024", label: "768×1024 (3:4 Portrait)" },
+  { value: "1024,1536", label: "1024×1536 (2:3 Portrait)" },
+  { value: "640,480", label: "640×480 (4:3 Landscape)" },
   { value: "960,640", label: "960×640 (3:2 Landscape)" },
+  { value: "1024,768", label: "1024×768 (4:3 Landscape)" },
+  { value: "1536,1024", label: "1536×1024 (3:2 Landscape)" },
   { value: "1296,972", label: "1296×972 (4:3 Standard)" },
-  { value: "1728,972", label: "1728×972 (16:9 HD)" }
+  { value: "1728,972", label: "1728×972 (16:9 HD)" },
+  { value: "1920,1080", label: "1920×1080 (Full HD 16:9)" },
+  { value: "2560,1440", label: "2560×1440 (QHD 16:9)" },
+  { value: "3840,2160", label: "3840×2160 (4K UHD 16:9)" },
+  { value: "1080,1920", label: "1080×1920 (Mobile Portrait 9:16)" },
+  { value: "1440,2560", label: "1440×2560 (Mobile Portrait QHD)" },
+  { value: "1200,630", label: "1200×630 (Social Media)" },
+  { value: "1080,1080", label: "1080×1080 (Instagram Square)" },
+  { value: "1080,1350", label: "1080×1350 (Instagram Portrait)" }
 ];
 
 export const IMAGE_COUNTS = [

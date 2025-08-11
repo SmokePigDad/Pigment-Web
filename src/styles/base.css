@@ -90,7 +90,11 @@ h1 {
 
 .subtitle-brand {
     font-size: 0.55em;
-    opacity: 0.8;
+    opacity: 1;
     font-weight: var(--font-weight-normal);
     color: var(--accent);
+    text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    /* Ensure visibility without requiring text selection */
+    -webkit-text-fill-color: var(--accent);
+    background: none;
 }

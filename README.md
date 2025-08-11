@@ -15,10 +15,12 @@ This application has been refactored into a modular architecture for better main
 │   ├── components/        # UI components
 │   │   ├── artStyleSelector.js
 │   │   ├── batchToggle.js
+│   │   ├── countSelector.js
 │   │   ├── gallery.js
 │   │   ├── imageGenerator.js
 │   │   ├── inspireButton.js
-│   │   └── modelSelector.js
+│   │   ├── modelSelector.js
+│   │   └── sizeSelector.js
 │   ├── config/           # Configuration and constants
 │   │   ├── artStyles.js
 │   │   └── constants.js
@@ -48,10 +50,12 @@ This application has been refactored into a modular architecture for better main
 ### Components (`src/components/`)
 - **artStyleSelector.js**: Manages art style dropdown and selection
 - **batchToggle.js**: Handles batch mode toggle functionality
+- **countSelector.js**: Manages image count dropdown and selection
 - **gallery.js**: Image gallery display and management
 - **imageGenerator.js**: Core image generation logic
 - **inspireButton.js**: AI prompt inspiration functionality
 - **modelSelector.js**: AI model selection and configuration
+- **sizeSelector.js**: Manages image size dropdown and selection
 
 ### Services (`src/services/`)
 - **pollinationsService.js**: Pollinations.AI API integration

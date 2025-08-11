@@ -2,6 +2,8 @@
 
 import { initializeModelSelector } from './components/modelSelector.js';
 import { initializeArtStyleSelector } from './components/artStyleSelector.js';
+import { initializeSizeSelector } from './components/sizeSelector.js';
+import { initializeCountSelector } from './components/countSelector.js';
 import { initializeBatchToggle } from './components/batchToggle.js';
 import { initializeInspireButton } from './components/inspireButton.js';
 import { initializeGallery } from './components/gallery.js';
@@ -17,6 +19,8 @@ function initializeApp() {
     // Initialize all components
     initializeModelSelector();
     initializeArtStyleSelector();
+    initializeSizeSelector();
+    initializeCountSelector();
     initializeBatchToggle();
     initializeInspireButton();
     initializeGallery();

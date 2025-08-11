@@ -80,6 +80,47 @@
     overflow: hidden;
 }
 
+/* Dynamic aspect ratios for different image sizes */
+.image-container[data-aspect-ratio="1:1"] {
+    aspect-ratio: 1;
+}
+
+.image-container[data-aspect-ratio="2:3"] {
+    aspect-ratio: 2/3;
+}
+
+.image-container[data-aspect-ratio="3:2"] {
+    aspect-ratio: 3/2;
+}
+
+.image-container[data-aspect-ratio="3:4"] {
+    aspect-ratio: 3/4;
+}
+
+.image-container[data-aspect-ratio="4:3"] {
+    aspect-ratio: 4/3;
+}
+
+.image-container[data-aspect-ratio="4:5"] {
+    aspect-ratio: 4/5;
+}
+
+.image-container[data-aspect-ratio="5:4"] {
+    aspect-ratio: 5/4;
+}
+
+.image-container[data-aspect-ratio="9:16"] {
+    aspect-ratio: 9/16;
+}
+
+.image-container[data-aspect-ratio="16:9"] {
+    aspect-ratio: 16/9;
+}
+
+.image-container[data-aspect-ratio="1.9:1"] {
+    aspect-ratio: 1.9/1;
+}
+
 .generated-image {
     width: 100%;
     height: 100%;

@@ -66,13 +66,7 @@
         <label for="count"><i class="fas fa-hashtag"></i> Number of Images</label>
         <div class="select-wrapper">
             <select id="count" class="input-control select-control">
-                <option value="2">2 images</option>
-                <option value="4" selected>4 images</option>
-                <option value="10">10 images</option>
-                <option value="25">25 images</option>
-                <option value="50">50 images</option>
-                <option value="100">100 images</option>
-                <option value="200">200 images</option>
+                <option value="loading" disabled>Loading counts...</option>
             </select>
             <i class="fas fa-chevron-down select-arrow"></i>
         </div>
@@ -90,12 +84,7 @@
         <label for="size"><i class="fas fa-expand-arrows-alt"></i> Image Size</label>
         <div class="select-wrapper">
             <select id="size" class="input-control select-control">
-                <option value="512,512">512×512 (Square)</option>
-                <option value="1024,1024" selected>1024×1024 (Square)</option>
-                <option value="640,960">640×960 (2:3 Portrait)</option>
-                <option value="960,640">960×640 (3:2 Landscape)</option>
-                <option value="1296,972">1296×972 (4:3 Standard)</option>
-                <option value="1728,972">1728×972 (16:9 HD)</option>
+                <option value="loading" disabled>Loading sizes...</option>
             </select>
             <i class="fas fa-chevron-down select-arrow"></i>
         </div>
@@ -112,11 +101,11 @@
             </label>
             <label class="flex-center-gap8-pointer" for="enhance">
                 <input type="checkbox" id="enhance">
-                Enhance<br>prompt
+                Enhance<br>Prompt
             </label>
             <label id="transparent-label" class="flex-center-gap8-pointer" for="transparent" style="display: none;">
                 <input type="checkbox" id="transparent">
-                Transparent<br>background
+                Transparent<br>Background
             </label>
         </div>
     </div>

@@ -5,6 +5,40 @@ import { batchDownloadImages, getFavoriteImages, getAllImages, downloadSingleIma
 import { getElementById, generateUniqueId } from '../utils/helpers.js';
 
 /**
+ * Gets aspect ratio string from width and height
+ * @param {number} width - Image width
+ * @param {number} height - Image height
+ * @returns {string} Aspect ratio string
+ */
+function getAspectRatioString(width, height) {
+  if (width === height) return '1:1';
+
+  // Common portrait ratios
+  if ((width === 640 && height === 960) || (width === 1024 && height === 1536)) return '2:3';
+  if ((width === 480 && height === 640) || (width === 768 && height === 1024)) return '3:4';
+  if (width === 1080 && height === 1920) return '9:16';
+  if (width === 1080 && height === 1350) return '4:5';
+
+  // Common landscape ratios
+  if ((width === 960 && height === 640) || (width === 1536 && height === 1024)) return '3:2';
+  if ((width === 640 && height === 480) || (width === 1024 && height === 768) || (width === 1296 && height === 972)) return '4:3';
+  if ((width === 1728 && height === 972) || (width === 1920 && height === 1080) || (width === 2560 && height === 1440) || (width === 3840 && height === 2160)) return '16:9';
+  if (width === 1200 && height === 630) return '1.9:1';
+
+  // Calculate GCD for custom ratios
+  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  const divisor = gcd(width, height);
+  const ratioW = width / divisor;
+  const ratioH = height / divisor;
+
+  // Simplify common ratios
+  if (ratioW === 5 && ratioH === 4) return '5:4';
+  if (ratioW === 4 && ratioH === 5) return '4:5';
+
+  return `${ratioW}:${ratioH}`;
+}
+
+/**
  * Initializes the gallery component
  */
 export function initializeGallery() {
@@ -152,12 +186,14 @@ function deleteNonFavoriteImages(nonFavoriteCards) {
  * @param {string} params.prompt - Image prompt
  * @param {string} params.style - Art style
  * @param {string} params.seed - Generation seed
+ * @param {number} params.width - Image width
+ * @param {number} params.height - Image height
  * @returns {HTMLElement} Image card element
  */
 export function createImageCard(params) {
-  const { prompt, style, seed } = params;
+  const { prompt, style, seed, width, height } = params;
   const imgId = generateUniqueId('img');
-  
+
   const card = document.createElement('div');
   card.className = "image-card";
   card.setAttribute("tabindex", "0");
@@ -167,6 +203,12 @@ export function createImageCard(params) {
 
   const imgContainer = document.createElement('div');
   imgContainer.className = "image-container";
+
+  // Set aspect ratio based on image dimensions
+  if (width && height) {
+    const aspectRatio = getAspectRatioString(width, height);
+    imgContainer.setAttribute('data-aspect-ratio', aspectRatio);
+  }
 
   const placeholder = document.createElement('div');
   placeholder.className = "image-placeholder";
@@ -184,7 +226,7 @@ export function createImageCard(params) {
   imgContainer.appendChild(overlay);
 
   card.appendChild(imgContainer);
-  
+
   return { card, imgElement, placeholder };
 }
 
@@ -224,6 +266,18 @@ function createImageOverlay(imgElement, prompt, style, seed) {
   const actions = document.createElement('div');
   actions.className = "image-actions";
 
+  // View button
+  const viewBtn = document.createElement('button');
+  viewBtn.className = "action-btn";
+  viewBtn.innerHTML = `<i class="fas fa-external-link-alt"></i>`;
+  viewBtn.title = "Open image in new tab for larger viewing";
+  viewBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (imgElement.src) {
+      window.open(imgElement.src, '_blank');
+    }
+  });
+
   // Download button
   const dlBtn = document.createElement('button');
   dlBtn.className = "action-btn";
@@ -234,9 +288,10 @@ function createImageOverlay(imgElement, prompt, style, seed) {
     downloadSingleImage(imgElement.src, `image-${Date.now()}.png`);
   });
 
+  actions.appendChild(viewBtn);
   actions.appendChild(dlBtn);
   overlay.appendChild(actions);
-  
+
   return overlay;
 }
 

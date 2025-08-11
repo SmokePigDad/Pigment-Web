@@ -110,13 +110,13 @@
 }
 
 .btn-download-fav {
-    background: #ff9800;
-    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: var(--shadow-md), 0 4px 15px rgba(156, 77, 255, 0.25);
 }
 
 .btn-download-fav:hover {
-    background: #f57c00;
-    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    box-shadow: var(--shadow-lg), 0 8px 25px rgba(156, 77, 255, 0.4);
 }
 
 .btn-delete-non-fav {

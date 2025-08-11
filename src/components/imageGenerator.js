@@ -250,7 +250,9 @@ async function generateAndDisplayImage(task, styleForDisplay, signal, retryAttem
   const { card, imgElement, placeholder } = createImageCard({
     prompt: task.prompt,
     style: task.style,
-    seed: task.seed
+    seed: task.seed,
+    width: task.width,
+    height: task.height
   });
 
   const gallery = getElementById('gallery');
