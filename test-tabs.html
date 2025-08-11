@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab System Test - Pigment</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Pigment <span class="subtitle-brand">with pollinations.ai</span></h1>
+    </div>
+    <p class="subtitle">
+        Test the new tab system and image-to-image functionality.
+    </p>
+</header>
+
+<!-- Tab Navigation (will be inserted here by JavaScript) -->
+
+<!-- Tab content containers -->
+<div id="text-to-image-content" class="tab-content generator-container">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-sliders-h"></i> Generation Settings</h2>
+    <p>This is the original text-to-image generation tab.</p>
+</div>
+<div class="gallery-section">
+    <h2 class="gallery-title"><i class="fas fa-images"></i> Generated Images</h2>
+    <p>Gallery content would go here.</p>
+</div>
+</div>
+
+<!-- Image-to-Image Tab Content -->
+<div id="image-to-image-content" class="tab-content generator-container" style="display: none;">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-exchange-alt"></i> Image Transformation</h2>
+    
+    <!-- Image Upload Section -->
+    <div class="form-group">
+        <label><i class="fas fa-upload"></i> Upload Source Image</label>
+        <div id="image-upload-zone" class="image-upload-zone">
+            <div class="upload-content">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p class="upload-text">Click to upload or drag & drop</p>
+                <p class="upload-hint">Supports JPG, PNG, WebP (max 10MB)</p>
+            </div>
+            <input type="file" id="image-upload-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display: none;">
+        </div>
+        <div id="image-preview-container" class="image-preview-container" style="display: none;"></div>
+        <div id="upload-error-message" class="error-message" style="display: none;"></div>
+    </div>
+    
+    <!-- Transformation Prompt -->
+    <div class="form-group">
+        <label for="transformation-prompt"><i class="fas fa-comment-dots"></i> Transformation Prompt</label>
+        <textarea
+            id="transformation-prompt"
+            class="input-control"
+            placeholder="Describe how you want to transform the image..."
+            aria-label="Transformation prompt"
+        ></textarea>
+        <div class="prompt-examples">
+            <p class="examples-label">Example prompts:</p>
+            <div class="example-prompts">
+                <span class="example-prompt" data-prompt="make it look like a watercolor painting">watercolor painting</span>
+                <span class="example-prompt" data-prompt="add cyberpunk neon lighting effects">cyberpunk style</span>
+                <span class="example-prompt" data-prompt="convert to black and white pencil sketch">pencil sketch</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transform Button -->
+    <button id="transform-btn" class="btn btn-generate" disabled>
+        <i class="fas fa-exchange-alt"></i> Transform Image
+    </button>
+    
+    <!-- Progress and Status -->
+    <div id="transform-progress-container" class="progress-container" style="display: none;">
+        <div class="progress-bar indeterminate"></div>
+    </div>
+    <div class="progress-text" id="transform-status-message">Upload an image to get started</div>
+    <div id="transform-error-message" class="error-message" style="display: none;"></div>
+</div>
+
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title"><i class="fas fa-images"></i> Transformation Result</h2>
+        <div class="gallery-controls">
+            <button id="download-result-btn" class="btn" style="display: none;">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+    <div id="transformation-result" class="transformation-result" style="display: none;"></div>
+</div>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeTabSystem } from './src/components/tabSystem.js';
+import { initializeImageUpload } from './src/components/imageUpload.js';
+import { initializeImageToImage } from './src/components/imageToImage.js';
+
+// Initialize components
+initializeTabSystem();
+initializeImageUpload();
+initializeImageToImage();
+
+console.log('Test page initialized');
+</script>
+
+</body>
+</html>

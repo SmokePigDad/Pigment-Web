@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Image-to-Image Test</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Pigment <span class="subtitle-brand">Image-to-Image Test</span></h1>
+    </div>
+    <p class="subtitle">
+        Test the new image-to-image transformation functionality.
+    </p>
+</header>
+
+<!-- Image-to-Image Content -->
+<div class="generator-container">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-exchange-alt"></i> Image Transformation</h2>
+    
+    <!-- Image Upload Section -->
+    <div class="form-group">
+        <label><i class="fas fa-upload"></i> Upload Source Image</label>
+        <div id="image-upload-zone" class="image-upload-zone">
+            <div class="upload-content">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p class="upload-text">Click to upload or drag & drop</p>
+                <p class="upload-hint">Supports JPG, PNG, WebP (max 10MB)</p>
+            </div>
+            <input type="file" id="image-upload-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display: none;">
+        </div>
+        <div id="image-preview-container" class="image-preview-container" style="display: none;"></div>
+        <div id="upload-error-message" class="error-message" style="display: none;"></div>
+    </div>
+    
+    <!-- Transformation Prompt -->
+    <div class="form-group">
+        <label for="transformation-prompt"><i class="fas fa-comment-dots"></i> Transformation Prompt</label>
+        <textarea
+            id="transformation-prompt"
+            class="input-control"
+            placeholder="Describe how you want to transform the image... (e.g., 'make it look like a painting', 'add cyberpunk elements', 'convert to black and white sketch')"
+            aria-label="Transformation prompt"
+        ></textarea>
+        <div class="prompt-examples">
+            <p class="examples-label">Example prompts:</p>
+            <div class="example-prompts">
+                <span class="example-prompt" data-prompt="make it look like a watercolor painting">watercolor painting</span>
+                <span class="example-prompt" data-prompt="add cyberpunk neon lighting effects">cyberpunk style</span>
+                <span class="example-prompt" data-prompt="convert to black and white pencil sketch">pencil sketch</span>
+                <span class="example-prompt" data-prompt="make it look like an oil painting">oil painting</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transform Button -->
+    <button id="transform-btn" class="btn btn-generate" disabled aria-label="Transform Image" title="Transform the uploaded image using AI">
+        <i class="fas fa-exchange-alt"></i> Transform Image
+    </button>
+    
+    <!-- Progress and Status -->
+    <div id="transform-progress-container" class="progress-container" style="display: none;" role="status" aria-live="polite">
+        <div class="progress-bar indeterminate"></div>
+    </div>
+    <div class="progress-text" id="transform-status-message">Upload an image to get started</div>
+    <div id="transform-error-message" class="error-message" style="display: none;" aria-live="assertive"></div>
+</div>
+
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title"><i class="fas fa-images"></i> Transformation Result</h2>
+        <div class="gallery-controls" role="group" aria-label="Result actions">
+            <button id="download-result-btn" class="btn" style="display: none;" aria-label="Download transformed image" type="button" title="Download the transformed image">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+    <div id="transformation-result" class="transformation-result" style="display: none;"></div>
+</div>
+</div>
+
+</div>
+
+<script type="module">
+// Test the image-to-image functionality
+import { initializeImageUpload } from './src/components/imageUpload.js';
+import { initializeImageToImage } from './src/components/imageToImage.js';
+
+console.log('Starting full test...');
+
+// Initialize components
+initializeImageUpload();
+initializeImageToImage();
+
+console.log('Full test initialized');
+</script>
+
+</body>
+</html>

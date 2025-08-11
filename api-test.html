@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontext API Test</title>
+<style>
+body {
+    background: #0f0d15;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+.test-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.test-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(26, 22, 37, 0.7);
+    border-radius: 12px;
+}
+button {
+    background: #9c4dff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #1a1625;
+    color: #f0f0f0;
+    border: 1px solid #9c4dff;
+    border-radius: 8px;
+}
+.result-image {
+    max-width: 300px;
+    margin: 10px;
+    border-radius: 8px;
+}
+.error {
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="test-container">
+    <h1>Kontext API Test</h1>
+    
+    <div class="test-section">
+        <h3>Test with Public Image URL</h3>
+        <input type="text" id="test-image-url" placeholder="Enter image URL" value="https://picsum.photos/400/400">
+        <textarea id="test-prompt" placeholder="Enter transformation prompt">make it look like a watercolor painting</textarea>
+        <button onclick="testTransformation()">Test Transformation</button>
+        <div id="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Upload and Transform</h3>
+        <input type="file" id="upload-input" accept="image/*">
+        <textarea id="upload-prompt" placeholder="Enter transformation prompt">convert to black and white sketch</textarea>
+        <button onclick="testUploadTransformation()" id="upload-transform-btn" disabled>Transform Uploaded Image</button>
+        <div id="upload-result"></div>
+    </div>
+</div>
+
+<script>
+// Test the Kontext API directly
+async function testTransformation() {
+    const imageUrl = document.getElementById('test-image-url').value;
+    const prompt = document.getElementById('test-prompt').value;
+    const resultDiv = document.getElementById('test-result');
+    
+    if (!imageUrl || !prompt) {
+        resultDiv.innerHTML = '<div class="error">Please enter both image URL and prompt</div>';
+        return;
+    }
+    
+    resultDiv.innerHTML = '<p>Transforming image...</p>';
+    
+    try {
+        const encodedPrompt = encodeURIComponent(prompt);
+        const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(imageUrl)}`;
+        
+        console.log('API URL:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        
+        const blob = await response.blob();
+        const resultImageUrl = URL.createObjectURL(blob);
+        
+        resultDiv.innerHTML = `
+            <h4>Transformation Result:</h4>
+            <div style="display: flex; gap: 20px; align-items: start;">
+                <div>
+                    <p>Original:</p>
+                    <img src="${imageUrl}" class="result-image" alt="Original">
+                </div>
+                <div>
+                    <p>Transformed:</p>
+                    <img src="${resultImageUrl}" class="result-image" alt="Transformed">
+                </div>
+            </div>
+            <button onclick="downloadImage('${resultImageUrl}')">Download Result</button>
+        `;
+        
+    } catch (error) {
+        console.error('Transformation error:', error);
+        resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+    }
+}
+
+// Test with uploaded file
+let uploadedFile = null;
+
+document.getElementById('upload-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        uploadedFile = file;
+        document.getElementById('upload-transform-btn').disabled = false;
+        document.getElementById('upload-result').innerHTML = `<p>File selected: ${file.name}</p>`;
+    }
+});
+
+async function testUploadTransformation() {
+    if (!uploadedFile) return;
+    
+    const prompt = document.getElementById('upload-prompt').value;
+    const resultDiv = document.getElementById('upload-result');
+    
+    if (!prompt) {
+        resultDiv.innerHTML = '<div class="error">Please enter a transformation prompt</div>';
+        return;
+    }
+    
+    resultDiv.innerHTML = '<p>Processing uploaded image...</p>';
+    
+    try {
+        // Convert file to data URL
+        const dataUrl = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(uploadedFile);
+        });
+        
+        // For testing, we'll try the API with the data URL directly
+        const encodedPrompt = encodeURIComponent(prompt);
+        const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&image=${encodeURIComponent(dataUrl)}`;
+        
+        console.log('Testing with data URL...');
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        
+        const blob = await response.blob();
+        const resultImageUrl = URL.createObjectURL(blob);
+        
+        resultDiv.innerHTML = `
+            <h4>Upload Transformation Result:</h4>
+            <div style="display: flex; gap: 20px; align-items: start;">
+                <div>
+                    <p>Original:</p>
+                    <img src="${dataUrl}" class="result-image" alt="Original">
+                </div>
+                <div>
+                    <p>Transformed:</p>
+                    <img src="${resultImageUrl}" class="result-image" alt="Transformed">
+                </div>
+            </div>
+            <button onclick="downloadImage('${resultImageUrl}')">Download Result</button>
+        `;
+        
+    } catch (error) {
+        console.error('Upload transformation error:', error);
+        resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+    }
+}
+
+function downloadImage(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transformed-image-${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+</script>
+
+</body>
+</html>
