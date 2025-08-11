@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debug Enhanced Features</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Debug Enhanced Features</h1>
+    </div>
+</header>
+
+<div class="generator-container">
+<div class="control-panel">
+    <h2 class="panel-title">Testing Enhanced Features</h2>
+    
+    <!-- Prompt Group for History -->
+    <div class="form-group" id="prompt-group">
+        <label for="prompt"><i class="fas fa-comment-dots"></i> Image Prompt</label>
+        <div class="prompt-container">
+            <button id="inspire-btn" class="btn btn-inspire">
+                <i class="fas fa-dice"></i>
+            </button>
+            <textarea id="prompt" class="input-control" placeholder="Test prompt...">Test prompt</textarea>
+        </div>
+    </div>
+    
+    <!-- Advanced Options for Seed Control -->
+    <div class="form-group" id="advanced-options">
+        <div class="flex-gap-15-wrap-mt10">
+            <label class="flex-center-gap8-pointer" for="nologo">
+                <input type="checkbox" id="nologo" checked>
+                Remove<br>Watermark
+            </label>
+        </div>
+    </div>
+    
+    <div id="debug-output" style="background: rgba(26, 22, 37, 0.7); padding: 20px; margin: 20px 0; border-radius: 8px;">
+        <h3>Debug Output:</h3>
+        <div id="debug-messages"></div>
+    </div>
+</div>
+
+<!-- Gallery Section for Filter -->
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title" id="gallery-title"><i class="fas fa-images"></i> Generated Images</h2>
+        <div class="gallery-controls">
+            <button class="btn"><i class="fas fa-download"></i></button>
+        </div>
+    </div>
+    <div class="gallery-grid" id="gallery"></div>
+</div>
+</div>
+
+<script type="module">
+function addDebugMessage(message) {
+    const debugMessages = document.getElementById('debug-messages');
+    const p = document.createElement('p');
+    p.textContent = new Date().toLocaleTimeString() + ': ' + message;
+    debugMessages.appendChild(p);
+    console.log(message);
+}
+
+addDebugMessage('Starting enhanced features test...');
+
+// Test each enhanced component
+const enhancedComponents = [
+    { name: 'promptHistory', path: './src/components/promptHistory.js' },
+    { name: 'seedControl', path: './src/components/seedControl.js' },
+    { name: 'galleryFilter', path: './src/components/galleryFilter.js' },
+    { name: 'imageComparison', path: './src/components/imageComparison.js' },
+    { name: 'settingsPanel', path: './src/components/settingsPanel.js' },
+    { name: 'keyboardShortcuts', path: './src/components/keyboardShortcuts.js' }
+];
+
+async function testEnhancedFeatures() {
+    for (const component of enhancedComponents) {
+        try {
+            addDebugMessage(`Loading ${component.name}...`);
+            const module = await import(component.path);
+            const initFunction = module[`initialize${component.name.charAt(0).toUpperCase() + component.name.slice(1)}`];
+            
+            if (initFunction) {
+                addDebugMessage(`Initializing ${component.name}...`);
+                initFunction();
+                addDebugMessage(`✅ ${component.name} initialized successfully`);
+            } else {
+                addDebugMessage(`❌ No init function found for ${component.name}`);
+            }
+        } catch (error) {
+            addDebugMessage(`❌ Failed to load ${component.name}: ${error.message}`);
+        }
+    }
+    
+    // Check if UI elements were added
+    setTimeout(() => {
+        addDebugMessage('Checking for added UI elements...');
+        
+        const historyBtn = document.getElementById('prompt-history-btn');
+        addDebugMessage(historyBtn ? '✅ Prompt history button found' : '❌ Prompt history button not found');
+        
+        const seedSection = document.querySelector('.seed-control-section');
+        addDebugMessage(seedSection ? '✅ Seed control section found' : '❌ Seed control section not found');
+        
+        const filterContainer = document.querySelector('.gallery-filter-container');
+        addDebugMessage(filterContainer ? '✅ Gallery filter container found' : '❌ Gallery filter container not found');
+        
+        const settingsBtn = document.getElementById('settings-btn');
+        addDebugMessage(settingsBtn ? '✅ Settings button found' : '❌ Settings button not found');
+        
+    }, 1000);
+}
+
+testEnhancedFeatures();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Main App</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div class="container">
+<header>
+    <div class="logo"><i class="fas fa-palette logo-icon"></i>
+        <h1>Pigment <span class="subtitle-brand">with pollinations.ai</span></h1>
+    </div>
+    <p class="subtitle">
+        Create stunning AI images: choose from a variety of models and styles.
+    </p>
+</header>
+<div class="generator-container">
+<div class="control-panel">
+    <h2 class="panel-title"><i class="fas fa-sliders-h"></i> Generation Settings</h2>
+    <div class="form-group" id="prompt-group">
+        <label for="prompt"><i class="fas fa-comment-dots"></i> Image Prompt</label>
+        <div class="prompt-container">
+            <button id="inspire-btn" class="btn btn-inspire"
+                aria-label="Inspire Me, random prompt suggestion"
+                title="Get AI-generated creative prompt inspiration" tabindex="0" type="button">
+                <i class="fas fa-dice"></i>
+            </button>
+            <textarea
+                id="prompt"
+                class="input-control"
+                placeholder="Describe the image you want to generate..."
+                aria-label="Image prompt, description of what you want to generate"
+            >A majestic lion in the savannah at sunset</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="model"><i class="fas fa-cogs"></i> AI Model</label>
+        <div class="select-wrapper">
+            <select id="model" class="input-control select-control">
+                <option value="loading" disabled>Loading models...</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+        <div id="model-info" class="model-info">
+            <p>Select a model to see its description</p>
+        </div>
+        <div id="model-seed-warning" class="model-seed-warning" style="display: none;"></div>
+    </div>
+    
+    <div class="form-group form-toggle-row" id="batch-toggle-row">
+        <div>
+            <label for="batch-toggle" class="batch-toggle-label">Batch Mode: All Art Styles</label>
+            <p id="batch-mode-desc">Overrides 'Number of Images' and 'Art Style' to generate one image for every style.</p>
+        </div>
+        <button id="batch-toggle" role="switch" aria-checked="false" aria-labelledby="batch-toggle-label" title="Toggle batch mode to generate one image for every art style">
+            <span class="toggle-icon"></span>
+        </button>
+    </div>
+    <div class="form-group" id="art-style-group">
+        <label for="art-style"><i class="fas fa-brush"></i> Art Style</label>
+        <div class="select-wrapper">
+            <select id="art-style" class="input-control select-control">
+                <option value="loading" disabled>Loading styles...</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group" id="count-group">
+        <label for="count"><i class="fas fa-images"></i> Number of Images</label>
+        <div class="select-wrapper">
+            <select id="count" class="input-control select-control">
+                <option value="loading" disabled>Loading counts...</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="size"><i class="fas fa-expand-arrows-alt"></i> Image Size</label>
+        <div class="select-wrapper">
+            <select id="size" class="input-control select-control">
+                <option value="loading" disabled>Loading sizes...</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+    <div class="form-group" id="advanced-options">
+        <div class="flex-gap-15-wrap-mt10">
+            <label class="flex-center-gap8-pointer" for="nologo">
+                <input type="checkbox" id="nologo" checked>
+                Remove<br>Watermark
+            </label>
+            <label class="flex-center-gap8-pointer" for="private">
+                <input type="checkbox" id="private" checked>
+                Private<br>Generation
+            </label>
+            <label class="flex-center-gap8-pointer" for="enhance">
+                <input type="checkbox" id="enhance">
+                Enhance<br>Prompt
+            </label>
+            <label id="transparent-label" class="flex-center-gap8-pointer" for="transparent" style="display: none;">
+                <input type="checkbox" id="transparent">
+                Transparent<br>Background
+            </label>
+        </div>
+    </div>
+    <button id="generate-btn" class="btn btn-generate" aria-label="Generate Images" title="Start generating AI images with current settings">
+        <i class="fas fa-magic"></i> Generate Images
+    </button>
+    <div class="progress-container" role="status" aria-live="polite">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="progress-text" id="progress-text">Ready to generate</div>
+    <div class="status-message minh-2_4em" id="status-message" aria-live="assertive"></div>
+</div>
+<div class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="gallery-title" id="gallery-title"><i class="fas fa-images"></i> Generated Images</h2>
+        <div class="gallery-controls" role="group" aria-label="Gallery actions">
+            <button id="download-all-btn" class="btn" aria-label="Download all images as ZIP" type="button" tabindex="0" title="Download all generated images as a ZIP file">
+                <i class="fas fa-download"></i>
+            </button>
+            <button id="download-favorites-btn" class="btn btn-download-fav" aria-label="Download favorites as ZIP" type="button" tabindex="0" title="Download only favorite images as a ZIP file">
+                <i class="fas fa-heart"></i>
+            </button>
+            <button id="delete-non-favorites-btn" class="btn btn-delete-non-fav" aria-label="Delete all non-favorite images" type="button" tabindex="0" title="Delete all images that are not marked as favorites">
+                <i class="fas fa-heart-broken"></i>
+            </button>
+            <button id="clear-btn" class="btn btn-clear" aria-label="Clear all generated images" type="button" tabindex="0" title="Remove all images from the gallery">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>
+    <div class="gallery-grid" id="gallery" role="region" aria-label="Generated Images Gallery" aria-labelledby="gallery-title" aria-live="polite" tabindex="0"></div>
+</div>
+</div>
+
+<div id="debug-output" style="position: fixed; top: 10px; right: 10px; width: 300px; background: rgba(0,0,0,0.9); color: white; padding: 10px; border-radius: 8px; font-size: 12px; z-index: 9999; max-height: 400px; overflow-y: auto;">
+    <h4>Debug Log:</h4>
+    <div id="debug-messages"></div>
+</div>
+
+<script type="module">
+function addDebugMessage(message) {
+    const debugMessages = document.getElementById('debug-messages');
+    const p = document.createElement('p');
+    p.textContent = new Date().toLocaleTimeString() + ': ' + message;
+    p.style.margin = '2px 0';
+    debugMessages.appendChild(p);
+    console.log(message);
+}
+
+addDebugMessage('Starting main app test...');
+
+try {
+    // Import and test main.js
+    addDebugMessage('Importing main.js...');
+    const mainModule = await import('./src/main.js');
+    addDebugMessage('✅ main.js imported successfully');
+    
+    // Check if initializeApp is available
+    if (mainModule.initializeApp) {
+        addDebugMessage('✅ initializeApp function found');
+    } else {
+        addDebugMessage('❌ initializeApp function not found');
+    }
+    
+} catch (error) {
+    addDebugMessage(`❌ Failed to import main.js: ${error.message}`);
+}
+
+// Wait a bit then check for enhanced features
+setTimeout(() => {
+    addDebugMessage('Checking for enhanced features...');
+    
+    const historyBtn = document.getElementById('prompt-history-btn');
+    addDebugMessage(historyBtn ? '✅ Prompt history button found' : '❌ Prompt history button not found');
+    
+    const seedSection = document.querySelector('.seed-control-section');
+    addDebugMessage(seedSection ? '✅ Seed control section found' : '❌ Seed control section not found');
+    
+    const filterContainer = document.querySelector('.gallery-filter-container');
+    addDebugMessage(filterContainer ? '✅ Gallery filter container found' : '❌ Gallery filter container not found');
+    
+    const settingsBtn = document.getElementById('settings-btn');
+    addDebugMessage(settingsBtn ? '✅ Settings button found' : '❌ Settings button not found');
+    
+    // Check if any buttons were added to prompt container
+    const promptContainer = document.querySelector('.prompt-container');
+    if (promptContainer) {
+        const buttons = promptContainer.querySelectorAll('button');
+        addDebugMessage(`Prompt container has ${buttons.length} buttons`);
+        buttons.forEach((btn, i) => {
+            addDebugMessage(`Button ${i}: id="${btn.id}", class="${btn.className}"`);
+        });
+    }
+    
+}, 2000);
+</script>
+
+</body>
+</html>
