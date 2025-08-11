@@ -13,9 +13,54 @@ import { API_CONFIG } from '../config/constants.js';
  */
 export function initializeImageGenerator() {
   const generateBtn = getElementById('generate-btn');
-  
+
   if (generateBtn) {
-    generateBtn.addEventListener('click', handleGenerateImages);
+    generateBtn.addEventListener('click', handleGenerateButtonClick);
+  }
+}
+
+/**
+ * Handles the generate/cancel button click
+ */
+function handleGenerateButtonClick() {
+  if (AppState.isGenerating) {
+    // Cancel generation
+    handleCancelGeneration();
+  } else {
+    // Start generation
+    handleGenerateImages();
+  }
+}
+
+/**
+ * Handles canceling the current generation
+ */
+function handleCancelGeneration() {
+  abortGeneration();
+  updateGenerateButton(false);
+  updateStatusMessage("Generation was cancelled.");
+}
+
+/**
+ * Updates the generate button UI based on generation state
+ * @param {boolean} isGenerating - Whether generation is in progress
+ */
+function updateGenerateButton(isGenerating) {
+  const generateBtn = getElementById('generate-btn');
+  if (!generateBtn) return;
+
+  if (isGenerating) {
+    generateBtn.innerHTML = '<i class="fas fa-stop"></i> Cancel Generation';
+    generateBtn.classList.add('btn-cancel');
+    generateBtn.classList.remove('btn-generate');
+    generateBtn.setAttribute('aria-label', 'Cancel image generation');
+    generateBtn.setAttribute('title', 'Stop the current image generation process');
+  } else {
+    generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Images';
+    generateBtn.classList.remove('btn-cancel');
+    generateBtn.classList.add('btn-generate');
+    generateBtn.setAttribute('aria-label', 'Generate Images');
+    generateBtn.setAttribute('title', 'Start generating AI images with current settings');
   }
 }
 
@@ -35,6 +80,7 @@ async function handleGenerateImages() {
 
   const abortController = new AbortController();
   setGenerationState(true, abortController);
+  updateGenerateButton(true);
 
   const queue = buildGenerationQueue(generationParams);
   
@@ -79,6 +125,7 @@ async function handleGenerateImages() {
     updateProgressBar(100);
     updateProgressText(`Done. Generated ${pluralize(imagesGenerated, "image")}.`);
     setGenerationState(false);
+    updateGenerateButton(false);
   }
 }
 

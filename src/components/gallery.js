@@ -18,6 +18,7 @@ function setupGalleryControls() {
   const clearBtn = getElementById('clear-btn');
   const downloadAllBtn = getElementById('download-all-btn');
   const downloadFavoritesBtn = getElementById('download-favorites-btn');
+  const deleteNonFavoritesBtn = getElementById('delete-non-favorites-btn');
 
   if (clearBtn) {
     clearBtn.addEventListener('click', handleClearGallery);
@@ -29,6 +30,10 @@ function setupGalleryControls() {
 
   if (downloadFavoritesBtn) {
     downloadFavoritesBtn.addEventListener('click', handleDownloadFavorites);
+  }
+
+  if (deleteNonFavoritesBtn) {
+    deleteNonFavoritesBtn.addEventListener('click', handleDeleteNonFavorites);
   }
 }
 
@@ -85,7 +90,7 @@ async function handleDownloadFavorites() {
     showGalleryStatus("No favorite images to download", true);
     return;
   }
-  
+
   try {
     await batchDownloadImages(favoriteImages, "favorite-images.zip");
     showGalleryStatus(`Downloaded ${favoriteImages.length} favorite images`);
@@ -93,6 +98,52 @@ async function handleDownloadFavorites() {
     console.error('Error downloading favorite images:', error);
     showGalleryStatus("Failed to download favorite images", true);
   }
+}
+
+/**
+ * Handles deleting non-favorite images
+ */
+function handleDeleteNonFavorites() {
+  const nonFavoriteCards = getNonFavoriteImageCards();
+
+  if (nonFavoriteCards.length === 0) {
+    showGalleryStatus("No non-favorite images to delete", true);
+    return;
+  }
+
+  // Show confirmation dialog
+  const confirmMessage = `Are you sure you want to delete ${nonFavoriteCards.length} non-favorite image${nonFavoriteCards.length === 1 ? '' : 's'}? This action cannot be undone.`;
+
+  if (confirm(confirmMessage)) {
+    deleteNonFavoriteImages(nonFavoriteCards);
+    showGalleryStatus(`Deleted ${nonFavoriteCards.length} non-favorite image${nonFavoriteCards.length === 1 ? '' : 's'}`);
+  }
+}
+
+/**
+ * Gets all non-favorite image cards from the gallery
+ * @returns {HTMLElement[]} Array of non-favorite image card elements
+ */
+function getNonFavoriteImageCards() {
+  const allCards = document.querySelectorAll('.image-card');
+  return Array.from(allCards).filter(card => !card.classList.contains('favorite'));
+}
+
+/**
+ * Deletes non-favorite images from the gallery
+ * @param {HTMLElement[]} nonFavoriteCards - Array of non-favorite image card elements
+ */
+function deleteNonFavoriteImages(nonFavoriteCards) {
+  nonFavoriteCards.forEach(card => {
+    // Revoke object URL if it exists
+    const img = card.querySelector('.generated-image');
+    if (img && img.src && img.src.startsWith('blob:')) {
+      URL.revokeObjectURL(img.src);
+    }
+
+    // Remove the card from the DOM
+    card.remove();
+  });
 }
 
 /**
@@ -148,7 +199,7 @@ function createFavoriteButton(imgId) {
   favBtn.innerHTML = `<i class="fas fa-heart"></i>`;
   favBtn.setAttribute('aria-pressed', 'false');
   favBtn.setAttribute('aria-label', 'Mark as favorite');
-  favBtn.title = "Mark as favorite";
+  favBtn.title = "Add this image to your favorites";
   
   favBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -177,7 +228,7 @@ function createImageOverlay(imgElement, prompt, style, seed) {
   const dlBtn = document.createElement('button');
   dlBtn.className = "action-btn";
   dlBtn.innerHTML = `<i class="fas fa-download"></i>`;
-  dlBtn.title = "Download image";
+  dlBtn.title = "Download this image to your device";
   dlBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     downloadSingleImage(imgElement.src, `image-${Date.now()}.png`);
@@ -200,12 +251,12 @@ function toggleFavorite(imgId, favButton) {
   if (isFavorite(imgId)) {
     removeFromFavorites(imgId);
     favButton.setAttribute('aria-pressed', 'false');
-    favButton.title = "Mark as favorite";
+    favButton.title = "Add this image to your favorites";
     card.classList.remove('favorite');
   } else {
     addToFavorites(imgId);
     favButton.setAttribute('aria-pressed', 'true');
-    favButton.title = "Remove from favorites";
+    favButton.title = "Remove this image from your favorites";
     card.classList.add('favorite');
   }
 }

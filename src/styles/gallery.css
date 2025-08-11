@@ -40,7 +40,7 @@
 /* Gallery grid */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-lg);
     min-height: 200px;
 }
@@ -220,7 +220,7 @@
 /* Responsive gallery */
 @media (max-width: 768px) {
     .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-md);
     }
     

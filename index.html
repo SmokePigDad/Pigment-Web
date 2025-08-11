@@ -27,7 +27,7 @@
         <div class="prompt-container">
             <button id="inspire-btn" class="btn btn-inspire"
                 aria-label="Inspire Me, random prompt suggestion"
-                title="Suggest a random creative prompt" tabindex="0" type="button">
+                title="Get AI-generated creative prompt inspiration" tabindex="0" type="button">
                 <i class="fas fa-dice"></i>
             </button>
             <textarea
@@ -57,7 +57,7 @@
             <label for="batch-toggle" class="batch-toggle-label">Batch Mode: All Art Styles</label>
             <p id="batch-mode-desc">Overrides 'Number of Images' and 'Art Style' to generate one image for every style.</p>
         </div>
-        <button id="batch-toggle" role="switch" aria-checked="false" aria-labelledby="batch-toggle-label">
+        <button id="batch-toggle" role="switch" aria-checked="false" aria-labelledby="batch-toggle-label" title="Toggle batch mode to generate one image for every art style">
             <span class="toggle-icon"></span>
         </button>
     </div>
@@ -120,7 +120,7 @@
             </label>
         </div>
     </div>
-    <button id="generate-btn" class="btn btn-generate" aria-label="Generate Images">
+    <button id="generate-btn" class="btn btn-generate" aria-label="Generate Images" title="Start generating AI images with current settings">
         <i class="fas fa-magic"></i> Generate Images
     </button>
     <div class="progress-container" role="status" aria-live="polite">
@@ -133,13 +133,16 @@
     <div class="gallery-header">
         <h2 class="gallery-title" id="gallery-title"><i class="fas fa-images"></i> Generated Images</h2>
         <div class="gallery-controls" role="group" aria-label="Gallery actions">
-            <button id="download-all-btn" class="btn" aria-label="Download all images as ZIP" type="button" tabindex="0">
+            <button id="download-all-btn" class="btn" aria-label="Download all images as ZIP" type="button" tabindex="0" title="Download all generated images as a ZIP file">
                 <i class="fas fa-download"></i>
             </button>
-            <button id="download-favorites-btn" class="btn btn-download-fav" aria-label="Download favorites as ZIP" type="button" tabindex="0">
+            <button id="download-favorites-btn" class="btn btn-download-fav" aria-label="Download favorites as ZIP" type="button" tabindex="0" title="Download only favorite images as a ZIP file">
                 <i class="fas fa-heart"></i>
             </button>
-            <button id="clear-btn" class="btn btn-clear" aria-label="Clear all generated images" type="button" tabindex="0">
+            <button id="delete-non-favorites-btn" class="btn btn-delete-non-fav" aria-label="Delete all non-favorite images" type="button" tabindex="0" title="Delete all images that are not marked as favorites">
+                <i class="fas fa-heart-broken"></i>
+            </button>
+            <button id="clear-btn" class="btn btn-clear" aria-label="Clear all generated images" type="button" tabindex="0" title="Remove all images from the gallery">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </div>
