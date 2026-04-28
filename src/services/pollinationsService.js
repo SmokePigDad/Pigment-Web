@@ -56,13 +56,16 @@ export function buildImageUrl(params) {
 
   // Add BYOP API key if available
   const apiKey = getPollenApiKey();
+  console.log('BYOP API Key retrieved:', apiKey ? `${apiKey.substring(0, 10)}...` : 'null');
   if (apiKey) {
     urlParams.key = apiKey;
   }
 
   const searchParams = new URLSearchParams(urlParams);
   // Updated to use new endpoint format: /image/{prompt}
-  return `${API_CONFIG.POLLINATIONS_BASE_URL}/image/${encodedPrompt}?${searchParams.toString()}`;
+  const finalUrl = `${API_CONFIG.POLLINATIONS_BASE_URL}/image/${encodedPrompt}?${searchParams.toString()}`;
+  console.log('Generated URL (key masked):', finalUrl.replace(apiKey || '', '[API_KEY]'));
+  return finalUrl;
 }
 
 /**

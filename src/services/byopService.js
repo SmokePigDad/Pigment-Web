@@ -96,21 +96,31 @@ export function initiateAuthentication(options = {}) {
  */
 export function handleAuthCallback() {
   const hash = window.location.hash;
-  
+
+  console.log('BYOP handleAuthCallback - hash:', hash);
+
   if (!hash || hash.length < 2) {
     return false;
   }
-  
+
   // Parse the URL fragment for api_key
   const params = new URLSearchParams(hash.substring(1));
+
+  // Log all params found in the hash for debugging
+  console.log('BYOP callback params:');
+  for (const [key, value] of params.entries()) {
+    console.log(`  ${key}: ${value.substring(0, 10)}...`);
+  }
+
   const apiKey = params.get('api_key');
-  
+
   if (apiKey) {
+    console.log('BYOP: Found api_key, storing credentials');
     // Store the credentials
     storeCredentials(apiKey, {
       connectedAt: new Date().toISOString()
     });
-    
+
     // Clean up the URL by removing the hash
     const cleanUrl = window.location.href.split('#')[0];
     window.history.replaceState({}, document.title, cleanUrl);
