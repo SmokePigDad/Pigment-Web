@@ -57,7 +57,7 @@ export function buildImageUrl(params) {
   // Add BYOP API key if available
   const apiKey = getPollenApiKey();
   if (apiKey) {
-    urlParams.token = apiKey;
+    urlParams.key = apiKey;
   }
 
   const searchParams = new URLSearchParams(urlParams);
