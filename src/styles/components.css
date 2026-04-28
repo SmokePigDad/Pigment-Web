@@ -291,3 +291,67 @@ input[type="checkbox"] {
     font-size: 0.85rem;
     color: var(--warning);
 }
+
+/* BYOP Authentication Styles */
+.byop-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-4);
+    margin-top: var(--spacing-4);
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--surface);
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(156, 77, 255, 0.15);
+    flex-wrap: wrap;
+}
+
+.byop-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--font-size-sm);
+    color: var(--gray-light);
+}
+
+.byop-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: var(--transition-normal);
+}
+
+.byop-indicator.connected {
+    background: var(--success, #4caf50);
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.byop-indicator.disconnected {
+    background: var(--gray);
+}
+
+.byop-text {
+    font-weight: var(--font-weight-medium);
+}
+
+.btn-byop {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-sm);
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    box-shadow: 0 4px 15px rgba(0, 184, 148, 0.25);
+}
+
+.btn-byop:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+    box-shadow: 0 6px 20px rgba(0, 184, 148, 0.35);
+}
+
+.btn-byop.connected {
+    background: linear-gradient(135deg, var(--gray-dark), var(--gray));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-byop.connected:hover {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.35);
+}

@@ -14,14 +14,18 @@ import { initializeImageComparison } from './components/imageComparison.js';
 import { initializeGalleryFilter } from './components/galleryFilter.js';
 import { initializeSettingsPanel } from './components/settingsPanel.js';
 import { initializeKeyboardShortcuts } from './components/keyboardShortcuts.js';
+import { initializeBYOPAuth } from './components/byopAuth.js';
 
 /**
  * Initializes the entire application
  */
 function initializeApp() {
   console.log('Initializing Pigment application...');
-  
+
   try {
+    // Initialize BYOP authentication first (handles callback if present)
+    initializeBYOPAuth();
+
     // Initialize all components
     initializeModelSelector();
     initializeArtStyleSelector();
@@ -39,7 +43,7 @@ function initializeApp() {
     initializeGalleryFilter();
     initializeSettingsPanel();
     initializeKeyboardShortcuts();
-    
+
     console.log('Pigment application initialized successfully');
   } catch (error) {
     console.error('Error initializing application:', error);

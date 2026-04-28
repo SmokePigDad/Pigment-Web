@@ -94,12 +94,22 @@ This application has been refactored into a modular architecture for better main
 ## 🚀 Features
 
 ### Core Generation
-- **Multiple AI Models**: Choose from various AI models (GPT-Image, Flux, Turbo)
+- **20+ AI Models**: Extensive model selection organized by provider:
+  - *Flux Family*: flux, zimage, kontext, klein
+  - *OpenAI*: gptimage, gptimage-large, gpt-image-2 (with transparency)
+  - *Google/Gemini*: nanobanana, nanobanana-2, nanobanana-pro
+  - *Alibaba/Wan*: wan-image, wan-image-pro (4K), qwen-image
+  - *Specialized*: seedream5, grok-imagine, nova-canvas, p-image
 - **100+ Art Styles**: Extensive collection of artistic styles and techniques
 - **24+ Image Sizes**: From mobile formats to 4K UHD resolutions
 - **Batch Generation**: Generate images in all available art styles simultaneously
 - **Seed Control**: Reproducible generation with custom or random seeds
 - **Advanced Options**: Remove watermark, private generation, enhance prompt, transparency
+
+### BYOP (Bring Your Own Pollen)
+- **User Authentication**: Connect your Pollinations account for unlimited access
+- **Zero Cost for Developers**: Users pay from their own Pollen balance
+- **Easy Integration**: One-click connect/disconnect via redirect flow
 
 ### Enhanced Gallery
 - **Image Gallery**: View, favorite, and download generated images with proper aspect ratios
@@ -114,7 +124,7 @@ This application has been refactored into a modular architecture for better main
 - **Settings Panel**: Customizable user preferences and interface options
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Accessibility**: ARIA labels, keyboard navigation, screen reader support
-- **No API Keys Required**: Uses free Pollinations AI service
+- **Free Tier Available**: Works without authentication, or connect your Pollinations account for full access
 
 ## 🛠️ Development
 

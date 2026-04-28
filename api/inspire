@@ -1,16 +1,27 @@
 // api/inspire.js
+// Server-side fallback for AI prompt generation
+// Note: With BYOP (Bring Your Own Pollen), users can authenticate with their own
+// Pollinations account, making this server-side endpoint optional
 
 export default async function handler(request, response) {
-  // Read the secret API key from Vercel's environment variables
+  // Set CORS headers
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  response.setHeader('Access-Control-Allow-Methods', 'GET');
+
+  // Read the secret API key from Vercel's environment variables (optional with BYOP)
   const apiKey = process.env.POLLINATIONS_API_KEY;
 
   if (!apiKey) {
-    return response.status(500).json({ error: "API key is not configured on the server." });
+    // Return a message indicating BYOP should be used
+    return response.status(503).json({
+      error: "Server API key not configured. Please connect your Pollinations account using the 'Connect Pollen' button for full functionality.",
+      requiresByop: true
+    });
   }
 
   const instruction = "Generate a highly artistic and imaginative image prompt. Ensure the description is vivid, creative, and detailed enough to inspire unique artwork. Provide only the image prompt without any introductory or concluding comments.";
   const encodedInstruction = encodeURIComponent(instruction);
-  
+
   // Use the high-quality model for the request
   const url = `https://text.pollinations.ai/${encodedInstruction}?model=openai-large&temperature=0.9`;
 
@@ -27,13 +38,7 @@ export default async function handler(request, response) {
     }
 
     const promptText = await poll_res.text();
-    
-    // Set CORS headers to allow requests from your deployed domain
-    // For production, consider restricting Access-Control-Allow-Origin to your specific Vercel domain
-    // or removing it if only same-origin requests are expected.
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'GET');
-    
+
     return response.status(200).json({ prompt: promptText.trim() });
 
   } catch (error) {

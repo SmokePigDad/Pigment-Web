@@ -10,7 +10,7 @@ import { getElementById } from '../utils/helpers.js';
 export function initializeModelSelector() {
   const dropdown = getElementById('model');
   const modelInfo = getElementById('model-info');
-  
+
   if (!dropdown) {
     console.warn('Model dropdown not found');
     return;
@@ -21,35 +21,50 @@ export function initializeModelSelector() {
 }
 
 /**
- * Populates the model dropdown with available models
+ * Populates the model dropdown with available models, organized by category
  * @param {HTMLSelectElement} dropdown - Model dropdown element
  * @param {HTMLElement} modelInfo - Model info display element
  */
 function populateModelDropdown(dropdown, modelInfo) {
   const models = DEFAULT_MODELS;
-  
+
   try {
+    // Group models by category
+    const categories = {};
+    for (const model of models) {
+      const category = model.category || 'Other';
+      if (!categories[category]) {
+        categories[category] = [];
+      }
+      categories[category].push(model);
+    }
+
     let optionsHTML = "";
     const defaultModel = models.find(m => m.is_default) || models[0];
-    
-    for (const model of models) {
-      const isSelected = model === defaultModel ? ' selected' : '';
-      optionsHTML += `<option value="${model.name}"${isSelected}>${model.name}</option>`;
+
+    // Create optgroups for each category
+    for (const [category, categoryModels] of Object.entries(categories)) {
+      optionsHTML += `<optgroup label="${category}">`;
+      for (const model of categoryModels) {
+        const isSelected = model === defaultModel ? ' selected' : '';
+        optionsHTML += `<option value="${model.name}"${isSelected}>${model.name}</option>`;
+      }
+      optionsHTML += '</optgroup>';
     }
-    
+
     dropdown.innerHTML = optionsHTML;
-    
+
     // Update global state
     setAvailableModels(models);
-    
+
     // Update model info display
     if (modelInfo && defaultModel) {
-      updateModelInfo(modelInfo, defaultModel.name, defaultModel.description);
+      updateModelInfo(modelInfo, defaultModel.name, defaultModel.description, defaultModel);
     }
-    
+
     // Update advanced features based on default model
     updateAdvancedFeatureGating();
-    
+
   } catch (error) {
     console.error('Error populating model dropdown:', error);
     dropdown.innerHTML = '<option value="flux">flux</option>';
@@ -66,12 +81,12 @@ function setupModelChangeHandler(dropdown, modelInfo) {
     const selectedModel = dropdown.value;
     setActiveModel(selectedModel);
     updateAdvancedFeatureGating();
-    
+
     if (modelInfo) {
       const models = DEFAULT_MODELS;
       const model = models.find(m => m.name === selectedModel);
       const description = model?.description || '';
-      updateModelInfo(modelInfo, selectedModel, description);
+      updateModelInfo(modelInfo, selectedModel, description, model);
     }
   });
 }
@@ -81,10 +96,21 @@ function setupModelChangeHandler(dropdown, modelInfo) {
  * @param {HTMLElement} modelInfo - Model info element
  * @param {string} modelName - Name of the selected model
  * @param {string} description - Model description
+ * @param {Object} model - Full model object with capabilities
  */
-function updateModelInfo(modelInfo, modelName, description) {
+function updateModelInfo(modelInfo, modelName, description, model = null) {
   if (description) {
-    modelInfo.innerHTML = `<p><strong>${modelName}</strong><br>${description}</p>`;
+    let capabilitiesHtml = '';
+    if (model) {
+      const caps = [];
+      if (model.supportsTransparency) caps.push('🔲 Transparency');
+      if (model.supportsImageInput) caps.push('🖼️ Image Input');
+      if (model.supports4K) caps.push('📺 4K');
+      if (caps.length > 0) {
+        capabilitiesHtml = `<br><small style="color: var(--text-muted, #888);">${caps.join(' • ')}</small>`;
+      }
+    }
+    modelInfo.innerHTML = `<p><strong>${modelName}</strong><br>${description}${capabilitiesHtml}</p>`;
   } else {
     modelInfo.innerHTML = `<p>Select a model to see its description</p>`;
   }
@@ -102,10 +128,14 @@ export function updateAdvancedFeatureGating() {
     return;
   }
 
-  const isGptImageSelected = modelSelect.value === "gptimage";
-  transparentLabel.style.display = isGptImageSelected ? "flex" : "none";
-  
-  if (!isGptImageSelected) {
+  // Check if selected model supports transparency
+  const selectedModelName = modelSelect.value;
+  const model = DEFAULT_MODELS.find(m => m.name === selectedModelName);
+  const supportsTransparency = model?.supportsTransparency === true;
+
+  transparentLabel.style.display = supportsTransparency ? "flex" : "none";
+
+  if (!supportsTransparency) {
     transparentCheckbox.checked = false;
   }
 }

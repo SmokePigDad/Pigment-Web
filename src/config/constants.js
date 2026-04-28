@@ -52,10 +52,36 @@ export const INSPIRE_PROMPTS = [
   "Pirate ship sailing through a storm of shooting stars"
 ];
 
+// Organized by category for better UX
 export const DEFAULT_MODELS = [
-  { "name": "gptimage", "description": "Premium model with advanced features like transparency." },
-  { "name": "flux", "description": "High-quality image generation.", "is_default": true },
-  { "name": "turbo", "description": "A very fast image generation model." }
+  // Flux Family
+  { "name": "flux", "description": "Flux Schnell - High-quality fast image generation.", "is_default": true, "category": "Flux" },
+  { "name": "zimage", "description": "Z-Image Turbo 6B - Fast turbo model.", "category": "Flux" },
+  { "name": "kontext", "description": "Kontext - In-context editing support.", "category": "Flux" },
+  { "name": "klein", "description": "Flux.2 4B - Smaller efficient model.", "category": "Flux" },
+
+  // OpenAI-based
+  { "name": "gptimage", "description": "OpenAI GPT Image - Premium model with transparency support.", "category": "OpenAI", "supportsTransparency": true },
+  { "name": "gptimage-large", "description": "OpenAI GPT Image Large - Higher quality version.", "category": "OpenAI", "supportsTransparency": true },
+  { "name": "gpt-image-2", "description": "OpenAI GPT Image 2 - Latest generation.", "category": "OpenAI", "supportsTransparency": true },
+
+  // Google/Gemini-based
+  { "name": "nanobanana", "description": "Nanobanana - Google/Gemini based fast model.", "category": "Google" },
+  { "name": "nanobanana-2", "description": "Nanobanana 2 - Improved version.", "category": "Google" },
+  { "name": "nanobanana-pro", "description": "Nanobanana Pro - Supports image input and reasoning.", "category": "Google", "supportsImageInput": true },
+
+  // Alibaba/Wan-based
+  { "name": "wan-image", "description": "Wan Image - Alibaba image generation.", "category": "Alibaba" },
+  { "name": "wan-image-pro", "description": "Wan Image Pro - Up to 4K resolution support.", "category": "Alibaba", "supports4K": true },
+  { "name": "qwen-image", "description": "Qwen Image - Alibaba Qwen-based model.", "category": "Alibaba" },
+
+  // Specialized Models
+  { "name": "seedream5", "description": "Seedream 5 - ByteDance model with web search/reasoning.", "category": "Specialized" },
+  { "name": "grok-imagine", "description": "Grok Imagine - xAI official image model.", "category": "Specialized" },
+  { "name": "grok-imagine-pro", "description": "Grok Imagine Pro - xAI premium model.", "category": "Specialized" },
+  { "name": "nova-canvas", "description": "Nova Canvas - Amazon Bedrock image generation.", "category": "Specialized" },
+  { "name": "p-image", "description": "P-Image - Pruna fast generation model.", "category": "Specialized" },
+  { "name": "p-image-edit", "description": "P-Image Edit - Pruna editing model.", "category": "Specialized" }
 ];
 
 export const IMAGE_SIZES = [
@@ -96,8 +122,9 @@ export const IMAGE_COUNTS = [
 ];
 
 export const API_CONFIG = {
-  POLLINATIONS_BASE_URL: 'https://image.pollinations.ai',
+  POLLINATIONS_BASE_URL: 'https://gen.pollinations.ai',
   TEXT_API_URL: 'https://text.pollinations.ai',
+  BYOP_AUTH_URL: 'https://enter.pollinations.ai/authorize',
   RATE_LIMIT_DELAY: 1200, // milliseconds between requests
   MAX_RETRIES: 3,
   RETRY_DELAY: 950 // milliseconds between retries

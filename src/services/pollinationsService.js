@@ -1,9 +1,11 @@
 // Service for interacting with Pollinations AI API
 
 import { API_CONFIG } from '../config/constants.js';
+import { getPollenApiKey } from './byopService.js';
 
 /**
  * Generates an image URL for the Pollinations API
+ * Uses the new gen.pollinations.ai/image/{prompt} endpoint
  * @param {Object} params - Generation parameters
  * @param {string} params.prompt - The image prompt
  * @param {number} params.width - Image width
@@ -14,6 +16,8 @@ import { API_CONFIG } from '../config/constants.js';
  * @param {boolean} params.private - Private generation
  * @param {boolean} params.enhance - Enhance prompt
  * @param {boolean} params.transparent - Transparent background
+ * @param {boolean} params.safe - Safety filter
+ * @param {string} params.negative_prompt - Negative prompt for guidance
  * @returns {string} Complete API URL
  */
 export function buildImageUrl(params) {
@@ -26,25 +30,39 @@ export function buildImageUrl(params) {
     nologo,
     private: priv,
     enhance,
-    transparent
+    transparent,
+    safe,
+    negative_prompt
   } = params;
 
   const encodedPrompt = encodeURIComponent(prompt);
   const urlParams = {
     width,
     height,
-    seed,
     model,
     '_': Date.now()
   };
 
+  // Add seed only if provided (for reproducibility)
+  if (seed) urlParams.seed = seed;
+
+  // Optional parameters
   if (nologo) urlParams.nologo = "true";
   if (priv) urlParams.private = "true";
   if (enhance) urlParams.enhance = "true";
   if (transparent) urlParams.transparent = "true";
+  if (safe) urlParams.safe = "true";
+  if (negative_prompt) urlParams.negative_prompt = negative_prompt;
+
+  // Add BYOP API key if available
+  const apiKey = getPollenApiKey();
+  if (apiKey) {
+    urlParams.token = apiKey;
+  }
 
   const searchParams = new URLSearchParams(urlParams);
-  return `${API_CONFIG.POLLINATIONS_BASE_URL}/prompt/${encodedPrompt}?${searchParams.toString()}`;
+  // Updated to use new endpoint format: /image/{prompt}
+  return `${API_CONFIG.POLLINATIONS_BASE_URL}/image/${encodedPrompt}?${searchParams.toString()}`;
 }
 
 /**
